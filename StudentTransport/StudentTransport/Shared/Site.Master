@@ -1,19 +1,50 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="StudentTransport.Shared.Site" %>
 
 <!DOCTYPE html>
-
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
-    <asp:ContentPlaceHolder ID="head" runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Trans - Transport Management System</title>
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="css/layout.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        <header>
+            <div class="logo-container">
+                <div class="logo">Campus Trans</div>
+                <div class="tagline">Student Transport Management System</div>
+            </div>
+            <div class="user-info">
+                <div class="user-greeting">
+                    <span class="welcome">Welcome, </span>
+                    <asp:Literal runat="server" ID="litUserName" Text="Guest" />
+                </div>
+                <asp:Button runat="server" ID="btnLogout" Text="Logout" CssClass="btn-logout" />
+            </div>
+        </header>
+        
+        <nav>
+            <asp:PlaceHolder runat="server" ID="phNavigation" />
+        </nav>
+        
+        <main>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-        </div>
+        </main>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="copyright">&copy; <%= DateTime.Now.Year %> Campus Trans - University Transport Management System</div>
+                <div class="contact">Contact: transport@university.edu | Support: +1 (123) 456-7890</div>
+            </div>
+        </footer>
     </form>
+    <script src="js/common.js"></script>
+    <asp:ContentPlaceHolder ID="FooterScripts" runat="server">
+    </asp:ContentPlaceHolder>
 </body>
 </html>
