@@ -1,0 +1,54 @@
+﻿.manage-students {
+    padding: 20px;
+}
+
+.header-section {
+    padding: 20px 0;
+}
+
+.avatar img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.form-check-input {
+    margin-top: 0;
+}
+
+/* Action buttons */
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 20px;
+}
+
+.page-link {
+    border-radius: 5px;
+    margin: 0 3px;
+    border: 1px solid #dee2e6;
+}
+
+.page-item.active .page-link {
+    background-color: #6082B6;
+    border-color: #6082B6;
+}
+
+/* Filter section */
+.card-body {
+    padding: 20px;
+}

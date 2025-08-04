@@ -1,0 +1,171 @@
+﻿.manager-dashboard {
+    padding: 20px;
+}
+
+.header-section {
+    background: linear-gradient(135deg, #2c3e50, #6082B6);
+    color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border: none;
+    height: 100%;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+.stat-icon {
+    opacity: 0.3;
+}
+
+.stat-footer {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    border: none;
+}
+
+.card-header {
+    padding: 15px 20px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.chart-container {
+    height: 300px;
+    width: 100%;
+    position: relative;
+}
+
+.table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.status-list {
+    padding: 10px 0;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+    .status-item:hover {
+        background-color: #e9ecef;
+    }
+
+    .status-item.active {
+        background-color: #e3f2fd;
+        border-left: 4px solid #2196F3;
+    }
+
+.bus-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bus-number {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.bus-route {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 15px;
+}
+
+.status-text {
+    width: 100px;
+    text-align: right;
+    font-weight: 500;
+}
+
+.alert-list {
+    padding: 10px 0;
+}
+
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+    .alert-item:last-child {
+        border-bottom: none;
+    }
+
+    .alert-item i {
+        font-size: 1.2rem;
+        margin-right: 15px;
+        margin-top: 3px;
+    }
+
+    .alert-item.critical i {
+        color: #e74c3c;
+    }
+
+    .alert-item.warning i {
+        color: #f39c12;
+    }
+
+    .alert-item.info i {
+        color: #3498db;
+    }
+
+    .alert-item.resolved i {
+        color: #2ecc71;
+    }
+
+.alert-title {
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.alert-time {
+    font-size: 0.85rem;
+    color: #6c757d;
+}

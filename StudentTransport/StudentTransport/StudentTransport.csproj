@@ -74,19 +74,30 @@
     <Content Include="Account\Register\js\register.js" />
     <Content Include="Account\Register\Register.aspx" />
     <Content Include="Assets\Images\transportlogo.png" />
-    <Content Include="Driver\css\driver.css" />
-    <Content Include="Driver\Driver.aspx" />
-    <Content Include="Driver\js\driver.js" />
+    <Content Include="Driver\DriDefault\css\DriDefault.css" />
+    <Content Include="Driver\DriDefault\js\DriDefault.js" />
+    <Content Include="Driver\BusStatus\css\BusStatus.css" />
+    <Content Include="Driver\BusStatus\js\BusStatus.js" />
     <Content Include="Shared\css\layout.css" />
     <Content Include="Shared\css\site.css" />
     <Content Include="Shared\js\common.js" />
-    <Content Include="Shared\WebForm1.aspx" />
-    <Content Include="Students\css\student.css" />
-    <Content Include="Students\js\student.js" />
-    <Content Include="Students\Student.aspx" />
-    <Content Include="TransportManager\css\manager.css" />
-    <Content Include="TransportManager\js\manager.js" />
-    <Content Include="TransportManager\Manager.aspx" />
+    <Content Include="Driver\DriDefault\DriDefault.aspx" />
+    <Content Include="Driver\BusStatus\BusStatus.aspx" />
+    <Content Include="TransportManager\ManageStudents\ManageStudents.aspx" />
+    <Content Include="TransportManager\ManageDrivers\ManageDrivers.aspx" />
+    <Content Include="TransportManager\Dashboard\Dashboard.aspx" />
+    <Content Include="Students\Schedule\Schedule.aspx" />
+    <Content Include="Students\StudDefault\StudDefault.aspx" />
+    <Content Include="Students\Schedule\css\Schedule.css" />
+    <Content Include="Students\Schedule\js\Schedule.js" />
+    <Content Include="Students\StudDefault\css\StudDefault.css" />
+    <Content Include="Students\StudDefault\js\StudDefault.js" />
+    <Content Include="TransportManager\Dashboard\css\Dashboard.css" />
+    <Content Include="TransportManager\Dashboard\js\Dashboard.js" />
+    <Content Include="TransportManager\ManageDrivers\css\ManageDrivers.css" />
+    <Content Include="TransportManager\ManageDrivers\js\ManageDrivers.js" />
+    <Content Include="TransportManager\ManageStudents\css\ManageStudents.css" />
+    <Content Include="TransportManager\ManageStudents\js\ManageStudents.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -97,26 +108,54 @@
     <Compile Include="Shared\Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="Shared\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
+    <Compile Include="Driver\DriDefault\DriDefault.aspx.cs">
+      <DependentUpon>DriDefault.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Shared\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
+    <Compile Include="Driver\DriDefault\DriDefault.aspx.designer.cs">
+      <DependentUpon>DriDefault.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Students\Student.aspx.cs">
-      <DependentUpon>Student.aspx</DependentUpon>
+    <Compile Include="Driver\BusStatus\BusStatus.aspx.cs">
+      <DependentUpon>BusStatus.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Students\Student.aspx.designer.cs">
-      <DependentUpon>Student.aspx</DependentUpon>
+    <Compile Include="Driver\BusStatus\BusStatus.aspx.designer.cs">
+      <DependentUpon>BusStatus.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TransportManager\Manager.aspx.cs">
-      <DependentUpon>Manager.aspx</DependentUpon>
+    <Compile Include="TransportManager\ManageStudents\ManageStudents.aspx.cs">
+      <DependentUpon>ManageStudents.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TransportManager\Manager.aspx.designer.cs">
-      <DependentUpon>Manager.aspx</DependentUpon>
+    <Compile Include="TransportManager\ManageStudents\ManageStudents.aspx.designer.cs">
+      <DependentUpon>ManageStudents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TransportManager\ManageDrivers\ManageDrivers.aspx.cs">
+      <DependentUpon>ManageDrivers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransportManager\ManageDrivers\ManageDrivers.aspx.designer.cs">
+      <DependentUpon>ManageDrivers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TransportManager\Dashboard\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransportManager\Dashboard\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Students\Schedule\Schedule.aspx.cs">
+      <DependentUpon>Schedule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Students\Schedule\Schedule.aspx.designer.cs">
+      <DependentUpon>Schedule.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Students\StudDefault\StudDefault.aspx.cs">
+      <DependentUpon>StudDefault.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Students\StudDefault\StudDefault.aspx.designer.cs">
+      <DependentUpon>StudDefault.aspx</DependentUpon>
     </Compile>
     <Content Include="App_Code\Classes\UserManager.cs" />
     <Content Include="App_Code\Student.cs" />
@@ -136,13 +175,6 @@
     </Compile>
     <Compile Include="Account\Register\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Driver\Driver.aspx.cs">
-      <DependentUpon>Driver.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Driver\Driver.aspx.designer.cs">
-      <DependentUpon>Driver.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
