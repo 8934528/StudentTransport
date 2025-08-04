@@ -18,40 +18,56 @@
             │   └── Schedule.cs
             ├── Student/
             │   ├── StudDefault/
+            |   |   ├── css/
+            |   |   |   └──StudDefault.css
+            |   |   ├── js/
+            |   |   |   └── StudDefault.js
             │   │   ├── StudDefault.aspx
             │   │   └── StudDefault.aspx.cs
             │   ├── Schedule/
+            |   |   ├── css/
+            |   |   |   └── Schedule.css
+            |   |   ├── js/
+            |   |   |   └── Schedule.js
             │   │   ├── Schedule.aspx
             │   │   └── Schedule.aspx.cs
-            │   ├── css/
-            │   │   └── student.css
-            │   └── js/
-            │       └── student.js
             ├── Driver/
             │   ├── DriDefault/
+            |   |   ├── css/
+            |   |   |   └── DriDefault.css
+            |   |   ├── js/
+            |   |   |   └── DriDefault.js
             │   │   ├── DriDefault.aspx
             │   │   └── DriDefault.aspx.cs
             │   ├── BusStatus/
+            |   |   ├── css/
+            |   |   |   └── BusStatus.css
+            |   |   ├── js/
+            |   |   |   └── BusStatus.js
             │   │   ├── BusStatus.aspx
             │   │   └── BusStatus.aspx.cs
-            │   ├── css/
-            │   │   └── driver.css
-            │   └── js/
-            │       └── driver.js
             ├── TransportManager/
             │   ├── Dashboard/
+            |   |   ├── css/
+            |   |   |   └── Dashboard.css
+            |   |   ├── js/
+            |   |   |   └── Dashboard.js
             │   │   ├── Dashboard.aspx
             │   │   └── Dashboard.aspx.cs
             │   ├── ManageStudents/
+            |   |   ├── css/
+            |   |   |   └── ManageStudents.css
+            |   |   ├── js/
+            |   |   |   └── ManageStudents.js
             │   │   ├── ManageStudents.aspx
             │   │   └── ManageStudents.aspx.cs
             │   ├── ManageDrivers/
+            |   |   ├── css/
+            |   |   |   └── ManageDrivers.css
+            |   |   ├── js/
+            |   |   |   └── ManageDrivers.js
             │   │   ├── ManageDrivers.aspx
             │   │   └── ManageDrivers.aspx.cs
-            │   ├── css/
-            │   │   └── manager.css
-            │   └── js/
-            │       └── manager.js
             ├── Account/
             │   ├── Login/
             |   |   ├── css/
@@ -62,15 +78,11 @@
             │   │   └── Login.aspx.cs
             │   ├── Register/
             |   |   ├── css/
-            |   |   |   └──register.css
+            |   |   |   └── register.css
             |   |   ├── js/
             |   |   |   └── register.js
             │   │   ├── Register.aspx
             │   │   └── Register.aspx.cs
-            │   ├── css/
-            │   │   └── login.css
-            │   └── js/
-            │       └── login.js
             ├── Shared/
             │   ├── Transport.Master
             │   ├── Transport.Master.cs
