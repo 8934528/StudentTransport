@@ -8,7 +8,7 @@
 
 ## Project Structure
 
-    TransportManagementSystem/
+    StudentTransport/
     │
     ├── App_Code/
     │   ├── DatabaseHelper.cs
