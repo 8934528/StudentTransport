@@ -1,36 +1,19 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="StudentTransport.Shared.Site" %>
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<html>
 <head runat="server">
-    <title>Transport Management System</title>
-    <link href="css/site.css" rel="stylesheet" />
-    <link href="css/layout.css" rel="stylesheet" />
-    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-        <header>
-            <div class="logo">Transport System</div>
-            <div class="user-info">
-                <asp:Literal runat="server" ID="litUserName" />
-                <asp:Button runat="server" ID="btnLogout" Text="Logout" OnClick="btnLogout_Click" />
-            </div>
-        </header>
-        
-        <nav>
-            <asp:PlaceHolder runat="server" ID="phNavigation" />
-        </nav>
-        
-        <main>
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
-        </main>
-        
-        <footer>
-            &copy; <%= DateTime.Now.Year %> University Transport Management System
-        </footer>
+        </div>
     </form>
 </body>
 </html>

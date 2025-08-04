@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace StudentTransport.Shared
+namespace StudentTransport.Account.Login
 {
-    public partial class Site : System.Web.UI.MasterPage
+    public partial class login : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
