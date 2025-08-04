@@ -1,3 +1,14 @@
+USE master;
+GO
+
+-- Drop existing database if needed
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'StudentTransportDB')
+BEGIN
+    ALTER DATABASE StudentTransportDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE StudentTransportDB;
+END
+GO
+
 CREATE DATABASE StudentTransportDB;
 GO
 
@@ -118,27 +129,24 @@ INSERT INTO Users (Email, PasswordHash, FirstName, LastName, Role) VALUES
 
 -- 3. Students (6 records)
 INSERT INTO Students (StudentID, Residence, CampusLocation)
-SELECT UserID, 
-    CASE UserID 
-        WHEN (SELECT UserID FROM Users WHERE Email = 'student1@uni.com') THEN 'Harmony Res'
-        WHEN (SELECT UserID FROM Users WHERE Email = 'student2@uni.com') THEN 'Garden Res'
-        WHEN (SELECT UserID FROM Users WHERE Email = 'student3@uni.com') THEN 'Mountain View Res'
-        WHEN (SELECT UserID FROM Users WHERE Email = 'student4@uni.com') THEN 'Harmony Res'
-        WHEN (SELECT UserID FROM Users WHERE Email = 'student5@uni.com') THEN 'Garden Res'
-        WHEN (SELECT UserID FROM Users WHERE Email = 'student6@uni.com') THEN 'Mountain View Res'
+SELECT u.UserID, 
+    CASE u.Email 
+        WHEN 'student1@uni.com' THEN 'Harmony Res'
+        WHEN 'student2@uni.com' THEN 'Garden Res'
+        WHEN 'student3@uni.com' THEN 'Mountain View Res'
+        WHEN 'student4@uni.com' THEN 'Harmony Res'
+        WHEN 'student5@uni.com' THEN 'Garden Res'
+        WHEN 'student6@uni.com' THEN 'Mountain View Res'
     END,
     'Main Campus'
-FROM Users 
-WHERE Role = 'Student' AND Email IN (
-    'student1@uni.com', 'student2@uni.com', 'student3@uni.com', 
-    'student4@uni.com', 'student5@uni.com', 'student6@uni.com'
-);
+FROM Users u
+WHERE u.Role = 'Student';
 
 -- 4. Drivers (6 records)
 INSERT INTO Drivers (DriverID, LicenseNumber)
-SELECT UserID, 'DRV-' + CAST(UserID AS NVARCHAR(10))
-FROM Users 
-WHERE Role = 'Driver';
+SELECT u.UserID, 'DRV-' + CAST(u.UserID AS NVARCHAR(10))
+FROM Users u
+WHERE u.Role = 'Driver';
 
 -- 5. Buses (6 records)
 INSERT INTO Buses (BusNumber, Capacity) VALUES
@@ -149,39 +157,70 @@ INSERT INTO Buses (BusNumber, Capacity) VALUES
 ('BUS-105', 45),
 ('BUS-106', 30);
 
--- Assign drivers to buses
-UPDATE Buses SET CurrentDriverID = (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver1@uni.com')) WHERE BusID = 1;
-UPDATE Buses SET CurrentDriverID = (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver2@uni.com')) WHERE BusID = 2;
-UPDATE Buses SET CurrentDriverID = (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver3@uni.com')) WHERE BusID = 3;
-UPDATE Buses SET CurrentDriverID = (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver4@uni.com')) WHERE BusID = 4;
-UPDATE Buses SET CurrentDriverID = (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver5@uni.com')) WHERE BusID = 5;
-UPDATE Buses SET CurrentDriverID = (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver6@uni.com')) WHERE BusID = 6;
+-- Assign drivers to buses using a reliable method
+;WITH NumberedDrivers AS (
+    SELECT DriverID, ROW_NUMBER() OVER (ORDER BY DriverID) AS RowNum
+    FROM Drivers
+),
+NumberedBuses AS (
+    SELECT BusID, ROW_NUMBER() OVER (ORDER BY BusID) AS RowNum
+    FROM Buses
+)
+UPDATE b
+SET CurrentDriverID = d.DriverID
+FROM Buses b
+INNER JOIN NumberedBuses nb ON b.BusID = nb.BusID
+INNER JOIN NumberedDrivers d ON nb.RowNum = d.RowNum;
 
--- 6. Schedules (6 records)
+-- 6. Schedules (6 records) - Fixed syntax
 DECLARE @today DATETIME = GETDATE();
-INSERT INTO Schedules (BusID, DepartureStationID, ArrivalStationID, DepartureTime, EstimatedArrivalTime) VALUES
-(1, 1, 2, DATEADD(HOUR, 7, @today), DATEADD(MINUTE, 30, DATEADD(HOUR, 7, @today)),
-(2, 3, 4, DATEADD(HOUR, 8, @today), DATEADD(MINUTE, 45, DATEADD(HOUR, 8, @today)),
-(3, 5, 6, DATEADD(HOUR, 9, @today), DATEADD(MINUTE, 35, DATEADD(HOUR, 9, @today)),
-(4, 2, 1, DATEADD(HOUR, 10, @today), DATEADD(MINUTE, 30, DATEADD(HOUR, 10, @today)),
-(5, 4, 3, DATEADD(HOUR, 11, @today), DATEADD(MINUTE, 45, DATEADD(HOUR, 11, @today)),
-(6, 6, 5, DATEADD(HOUR, 12, @today), DATEADD(MINUTE, 35, DATEADD(HOUR, 12, @today)));
 
--- 7. BusStatusLog (6 records)
-INSERT INTO BusStatusLog (BusID, DriverID, Status) VALUES
-(1, (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver1@uni.com')), 'Ready'),
-(2, (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver2@uni.com')), 'InProgress'),
-(3, (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver3@uni.com')), 'OffDuty'),
-(4, (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver4@uni.com')), 'Ready'),
-(5, (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver5@uni.com')), 'Maintenance'),
-(6, (SELECT DriverID FROM Drivers WHERE DriverID = (SELECT UserID FROM Users WHERE Email = 'driver6@uni.com')), 'InProgress');
+INSERT INTO Schedules (BusID, DepartureStationID, ArrivalStationID, DepartureTime, EstimatedArrivalTime)
+SELECT 
+    BusID,
+    DepartureStationID,
+    ArrivalStationID,
+    DepartureTime,
+    EstimatedArrivalTime
+FROM (VALUES
+    (1, 1, 2, DATEADD(HOUR, 7, @today), DATEADD(MINUTE, 30, DATEADD(HOUR, 7, @today))),
+    (2, 3, 4, DATEADD(HOUR, 8, @today), DATEADD(MINUTE, 45, DATEADD(HOUR, 8, @today))),
+    (3, 5, 6, DATEADD(HOUR, 9, @today), DATEADD(MINUTE, 35, DATEADD(HOUR, 9, @today))),
+    (4, 2, 1, DATEADD(HOUR, 10, @today), DATEADD(MINUTE, 30, DATEADD(HOUR, 10, @today))),
+    (5, 4, 3, DATEADD(HOUR, 11, @today), DATEADD(MINUTE, 45, DATEADD(HOUR, 11, @today))),
+    (6, 6, 5, DATEADD(HOUR, 12, @today), DATEADD(MINUTE, 35, DATEADD(HOUR, 12, @today)))
+) AS SchedData(BusID, DepartureStationID, ArrivalStationID, DepartureTime, EstimatedArrivalTime);
 
--- 8. Bookings (6 records)
-INSERT INTO Bookings (StudentID, ScheduleID) VALUES
-((SELECT StudentID FROM Students WHERE StudentID = (SELECT UserID FROM Users WHERE Email = 'student1@uni.com')), 1),
-((SELECT StudentID FROM Students WHERE StudentID = (SELECT UserID FROM Users WHERE Email = 'student2@uni.com')), 2),
-((SELECT StudentID FROM Students WHERE StudentID = (SELECT UserID FROM Users WHERE Email = 'student3@uni.com')), 3),
-((SELECT StudentID FROM Students WHERE StudentID = (SELECT UserID FROM Users WHERE Email = 'student4@uni.com')), 4),
-((SELECT StudentID FROM Students WHERE StudentID = (SELECT UserID FROM Users WHERE Email = 'student5@uni.com')), 5),
-((SELECT StudentID FROM Students WHERE StudentID = (SELECT UserID FROM Users WHERE Email = 'student6@uni.com')), 6);
+-- 7. BusStatusLog (6 records) - Optimized
+INSERT INTO BusStatusLog (BusID, DriverID, Status)
+SELECT 
+    b.BusID,
+    b.CurrentDriverID,
+    CASE b.BusID
+        WHEN 1 THEN 'Ready'
+        WHEN 2 THEN 'InProgress'
+        WHEN 3 THEN 'OffDuty'
+        WHEN 4 THEN 'Ready'
+        WHEN 5 THEN 'Maintenance'
+        WHEN 6 THEN 'InProgress'
+    END
+FROM Buses b;
+
+-- 8. Bookings (6 records) - Optimized
+INSERT INTO Bookings (StudentID, ScheduleID)
+SELECT 
+    s.StudentID,
+    sc.ScheduleID
+FROM (
+    VALUES 
+        ('student1@uni.com', 1),
+        ('student2@uni.com', 2),
+        ('student3@uni.com', 3),
+        ('student4@uni.com', 4),
+        ('student5@uni.com', 5),
+        ('student6@uni.com', 6)
+) AS StudentBookings(Email, ScheduleID)
+INNER JOIN Users u ON u.Email = StudentBookings.Email
+INNER JOIN Students s ON s.StudentID = u.UserID
+INNER JOIN Schedules sc ON sc.ScheduleID = StudentBookings.ScheduleID;
 GO
