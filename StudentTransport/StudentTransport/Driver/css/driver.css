@@ -1,2 +1,50 @@
-﻿body {
+﻿.driver-status {
+    padding: 20px;
 }
+
+.bus-info {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.status-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.btn-status-ready {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-status-offduty {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.status-grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .status-grid th, .status-grid td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .status-grid th {
+        background-color: #f2f2f2;
+    }

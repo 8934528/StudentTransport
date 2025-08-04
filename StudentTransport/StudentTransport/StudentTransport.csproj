@@ -80,9 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Driver\BusStatus.aspx" />
     <Content Include="Driver\css\driver.css" />
-    <Content Include="Driver\Default.aspx" />
     <Content Include="Driver\js\driver.js" />
     <Content Include="Global.asax" />
     <Content Include="Login\css\login.css" />
@@ -92,18 +90,28 @@
     <Content Include="Shared\css\layout.css" />
     <Content Include="Shared\css\site.css" />
     <Content Include="Shared\js\common.js" />
-    <Content Include="Student\css\student.css" />
-    <Content Include="Student\js\student.js" />
-    <Content Include="Student\Schedule.aspx" />
-    <Content Include="Student\StudDefault.aspx" />
-    <Content Include="TransportManager\css\manager.css" />
+    <Content Include="Driver\BusStatus.aspx" />
+    <Content Include="Driver\Default.aspx" />
     <Content Include="TransportManager\Dashboard.aspx" />
-    <Content Include="TransportManager\js\manager.js" />
     <Content Include="TransportManager\ManageDrivers.aspx" />
     <Content Include="TransportManager\ManageStudents.aspx" />
+    <Content Include="Student\Schedule.aspx" />
+    <Content Include="Student\StudDefault.aspx" />
+    <Content Include="Student\css\student.css" />
+    <Content Include="Student\js\student.js" />
+    <Content Include="TransportManager\css\manager.css" />
+    <Content Include="TransportManager\js\manager.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\SecurityHelper.cs" />
+    <Compile Include="Shared\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Shared\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
     <Compile Include="Driver\BusStatus.aspx.cs">
       <DependentUpon>BusStatus.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -117,20 +125,6 @@
     </Compile>
     <Compile Include="Driver\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Student\Schedule.aspx.cs">
-      <DependentUpon>Schedule.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Student\Schedule.aspx.designer.cs">
-      <DependentUpon>Schedule.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Student\StudDefault.aspx.cs">
-      <DependentUpon>StudDefault.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Student\StudDefault.aspx.designer.cs">
-      <DependentUpon>StudDefault.aspx</DependentUpon>
     </Compile>
     <Compile Include="TransportManager\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
@@ -152,6 +146,20 @@
     </Compile>
     <Compile Include="TransportManager\ManageStudents.aspx.designer.cs">
       <DependentUpon>ManageStudents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Student\Schedule.aspx.cs">
+      <DependentUpon>Schedule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Student\Schedule.aspx.designer.cs">
+      <DependentUpon>Schedule.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Student\StudDefault.aspx.cs">
+      <DependentUpon>StudDefault.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Student\StudDefault.aspx.designer.cs">
+      <DependentUpon>StudDefault.aspx</DependentUpon>
     </Compile>
     <Content Include="App_Code\DatabaseHelper.cs" />
     <Content Include="App_Code\User.cs" />
@@ -181,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Shared\Site.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
