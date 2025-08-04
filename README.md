@@ -54,9 +54,17 @@
             │       └── manager.js
             ├── Account/
             │   ├── Login/
+            |   |   ├── css/
+            |   |   |   └──login.css
+            |   |   ├── js/
+            |   |   |   └── login.js
             │   │   ├── Login.aspx
             │   │   └── Login.aspx.cs
             │   ├── Register/
+            |   |   ├── css/
+            |   |   |   └──register.css
+            |   |   ├── js/
+            |   |   |   └── register.js
             │   │   ├── Register.aspx
             │   │   └── Register.aspx.cs
             │   ├── css/
