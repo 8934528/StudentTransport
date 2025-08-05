@@ -18,6 +18,7 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
+// Toast notification function
 function showToast(type, title, message) {
     const colors = {
         success: "#50C878",
@@ -28,7 +29,7 @@ function showToast(type, title, message) {
 
     Toastify({
         text: `<strong>${title}</strong><br>${message}`,
-        duration: 3000,
+        duration: 5000,
         close: true,
         gravity: "top",
         position: "right",

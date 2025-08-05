@@ -1,15 +1,19 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="StudentTransport.Account.Register.Register" %>
 
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Trans - Register</title>
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" />
     <link href="css/register.css" rel="stylesheet" />
 </head>
+
 <body>
     <div class="container-fluid register-container">
         <div class="row justify-content-center align-items-center min-vh-100">
@@ -23,40 +27,40 @@
                     <form id="form1" runat="server" class="px-3">
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label for="txtFirstName" class="form-label">First Name</label>
+                                <label for="txtFirstName" class="form-label">First Name *</label>
                                 <asp:TextBox runat="server" ID="txtFirstName" CssClass="form-control"
                                     placeholder="Enter your first name" required="true" />
                             </div>
 
                             <div class="col-md-6">
-                                <label for="txtLastName" class="form-label">Last Name</label>
+                                <label for="txtLastName" class="form-label">Last Name *</label>
                                 <asp:TextBox runat="server" ID="txtLastName" CssClass="form-control"
                                     placeholder="Enter your last name" required="true" />
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="txtEmail" class="form-label">Email Address</label>
+                            <label for="txtEmail" class="form-label">Email Address *</label>
                             <asp:TextBox runat="server" ID="txtEmail" CssClass="form-control"
                                 placeholder="Enter your university email" TextMode="Email" required="true" />
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label for="txtPassword" class="form-label">Password</label>
+                                <label for="txtPassword" class="form-label">Password *</label>
                                 <asp:TextBox runat="server" ID="txtPassword" TextMode="Password"
                                     CssClass="form-control" placeholder="Create a password" required="true" />
                             </div>
 
                             <div class="col-md-6">
-                                <label for="txtConfirmPassword" class="form-label">Confirm Password</label>
+                                <label for="txtConfirmPassword" class="form-label">Confirm Password *</label>
                                 <asp:TextBox runat="server" ID="txtConfirmPassword" TextMode="Password"
                                     CssClass="form-control" placeholder="Confirm your password" required="true" />
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="ddlRole" class="form-label">I am a</label>
+                            <label for="ddlRole" class="form-label">I am a *</label>
                             <asp:DropDownList runat="server" ID="ddlRole" CssClass="form-select" required="true">
                                 <asp:ListItem Value="">Select your role</asp:ListItem>
                                 <asp:ListItem Value="Student">Student</asp:ListItem>
@@ -68,13 +72,13 @@
                         <div class="mb-3 role-specific p-3 rounded" id="studentFields" style="display: none;">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="txtResidence" class="form-label">Residence</label>
+                                    <label for="txtResidence" class="form-label">Residence *</label>
                                     <asp:TextBox runat="server" ID="txtResidence" CssClass="form-control"
                                         placeholder="e.g., Harmony Res" />
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="txtCampus" class="form-label">Campus</label>
+                                    <label for="txtCampus" class="form-label">Campus *</label>
                                     <asp:TextBox runat="server" ID="txtCampus" CssClass="form-control"
                                         placeholder="e.g., Main Campus" />
                                 </div>
@@ -83,16 +87,17 @@
 
                         <div class="mb-3 role-specific p-3 rounded" id="driverFields" style="display: none;">
                             <div class="mb-3">
-                                <label for="txtLicense" class="form-label">Driver's License Number</label>
+                                <label for="txtLicense" class="form-label">Driver's License Number *</label>
                                 <asp:TextBox runat="server" ID="txtLicense" CssClass="form-control"
                                     placeholder="Enter license number" />
                             </div>
                         </div>
 
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="chkTerms" required="required" />
+                            <asp:CheckBox runat="server" ID="chkTerms" CssClass="form-check-input" required="true" />
                             <label class="form-check-label" for="chkTerms">
-                                I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                                I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and 
+                                <a href="#" class="text-decoration-none">Privacy Policy</a> *
                             </label>
                         </div>
 
@@ -129,8 +134,9 @@
         });
     </script>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="js/register.js"></script>
+    <script src="<%= ResolveUrl("~/Shared/js/common.js") %>"></script>
 </body>
 </html>

@@ -24,17 +24,44 @@ namespace StudentTransport.Account.Register
             string lastName = txtLastName.Text.Trim();
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text;
+            string confirmPassword = txtConfirmPassword.Text;
             string role = ddlRole.SelectedValue;
             string residence = txtResidence.Text.Trim();
             string campus = txtCampus.Text.Trim();
             string license = txtLicense.Text.Trim();
 
+            // Validate inputs
+            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
+                string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) ||
+                string.IsNullOrEmpty(role))
+            {
+                ShowToast("error", "Validation Error", "Please fill in all required fields");
+                return;
+            }
+
+            if (password != confirmPassword)
+            {
+                ShowToast("error", "Validation Error", "Passwords do not match");
+                return;
+            }
+
+            if (role == "Student" && (string.IsNullOrEmpty(residence) || string.IsNullOrEmpty(campus))
+            {
+                ShowToast("error", "Validation Error", "Please fill in residence and campus details");
+                return;
+            }
+
+            if (role == "Driver" && string.IsNullOrEmpty(license))
+            {
+                ShowToast("error", "Validation Error", "Please enter license number");
+                return;
+            }
+
             UserManager userManager = new UserManager();
 
             if (userManager.IsEmailRegistered(email))
             {
-                lblMessage.Text = "Email is already registered. Please use a different email.";
-                lblMessage.CssClass = "alert alert-danger mt-3";
+                ShowToast("error", "Registration Failed", "Email is already registered");
                 return;
             }
 
@@ -45,19 +72,22 @@ namespace StudentTransport.Account.Register
 
             if (success)
             {
-                // Show success toast
-                ClientScript.RegisterStartupScript(this.GetType(), "Toast",
-                    "showToast('success', 'Registration Successful', 'Your account has been created successfully!');", true);
+                ShowToast("success", "Registration Successful", "Your account has been created! Redirecting to login...");
 
                 // Redirect after delay
-                ClientScript.RegisterStartupScript(this.GetType(), "Redirect",
-                    "setTimeout(function(){ window.location.href = 'Login.aspx'; }, 2000);", true);
+                ClientScript.RegisterStartupScript(GetType(), "Redirect",
+                    "setTimeout(function(){ window.location.href = 'Login.aspx'; }, 3000);", true);
             }
             else
             {
-                lblMessage.Text = "Registration failed. Please try again.";
-                lblMessage.CssClass = "alert alert-danger mt-3";
+                ShowToast("error", "Registration Failed", "Account creation failed. Please try again.");
             }
+        }
+
+        private void ShowToast(string type, string title, string message)
+        {
+            ClientScript.RegisterStartupScript(GetType(), "Toast",
+                $"showToast('{type}', '{title}', '{message.Replace("'", "\\'")}');", true);
         }
     }
 }

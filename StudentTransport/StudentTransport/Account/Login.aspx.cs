@@ -23,6 +23,13 @@ namespace StudentTransport.Account.Login
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text;
 
+            // Validate inputs
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                ShowToast("error", "Validation Error", "Please fill in all required fields");
+                return;
+            }
+
             UserManager userManager = new UserManager();
             UserManager.UserInfo userInfo = userManager.AuthenticateUser(email, password);
 
@@ -32,6 +39,7 @@ namespace StudentTransport.Account.Login
                 Session["FullName"] = $"{userInfo.FirstName} {userInfo.LastName}";
                 Session["UserRole"] = userInfo.Role;
 
+                // Redirect based on role
                 switch (userInfo.Role)
                 {
                     case "Student":
@@ -50,9 +58,14 @@ namespace StudentTransport.Account.Login
             }
             else
             {
-                lblMessage.Text = userInfo.Message;
-                lblMessage.CssClass = "alert alert-danger mt-3";
+                ShowToast("error", "Login Failed", userInfo.Message);
             }
+        }
+
+        private void ShowToast(string type, string title, string message)
+        {
+            ClientScript.RegisterStartupScript(GetType(), "Toast",
+                $"showToast('{type}', '{title}', '{message.Replace("'", "\\'")}');", true);
         }
     }
 }
