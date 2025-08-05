@@ -45,7 +45,7 @@ namespace StudentTransport.Account.Register
                 return;
             }
 
-            if (role == "Student" && (string.IsNullOrEmpty(residence) || string.IsNullOrEmpty(campus))
+            if (role == "Student" && (string.IsNullOrEmpty(residence) || string.IsNullOrEmpty(campus)))
             {
                 ShowToast("error", "Validation Error", "Please fill in residence and campus details");
                 return;
