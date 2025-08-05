@@ -44,7 +44,7 @@
                         <asp:Button runat="server" ID="btnLogin" Text="Login" CssClass="btn-login w-100 mb-3" OnClick="btnLogin_Click" />
                         
                         <div class="text-center register-link">
-                            Don't have an account? <a href="../Register/Register.aspx">Register here</a>
+                            Don't have an account? <a href="Register.aspx">Register here</a>
                         </div>
                         
                         <asp:Label runat="server" ID="lblMessage" CssClass="alert alert-danger mt-3 d-none"></asp:Label>

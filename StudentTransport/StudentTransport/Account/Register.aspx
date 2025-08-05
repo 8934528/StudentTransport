@@ -99,7 +99,7 @@
                         <asp:Button runat="server" ID="btnRegister" Text="Create Account" CssClass="btn-register w-100 mb-3" OnClick="btnRegister_Click" />
 
                         <div class="text-center login-link">
-                            Already have an account? <a href="../Login/Login.aspx">Sign in</a>
+                            Already have an account? <a href="Login.aspx">Sign in</a>
                         </div>
 
                         <asp:Label runat="server" ID="lblMessage" CssClass="alert alert-danger mt-3 d-none"></asp:Label>

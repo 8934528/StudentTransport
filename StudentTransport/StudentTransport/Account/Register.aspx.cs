@@ -51,7 +51,7 @@ namespace StudentTransport.Account.Register
 
                 // Redirect after delay
                 ClientScript.RegisterStartupScript(this.GetType(), "Redirect",
-                    "setTimeout(function(){ window.location.href = '../Login/Login.aspx'; }, 2000);", true);
+                    "setTimeout(function(){ window.location.href = 'Login.aspx'; }, 2000);", true);
             }
             else
             {

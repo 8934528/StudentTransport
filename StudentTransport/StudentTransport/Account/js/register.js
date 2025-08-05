@@ -103,7 +103,7 @@
                     this.style.background = 'linear-gradient(to right, #2ecc71, #27ae60)';
 
                     setTimeout(() => {
-                        window.location.href = '../Login/Login.aspx';
+                        window.location.href = 'Login.aspx';
                     }, 1000);
                 }, 1500);
             }
