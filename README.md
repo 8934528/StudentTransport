@@ -103,6 +103,7 @@
             │   ├── Site.Master.designer.cs
             |   |
             |   ├── Classes/
+            |   |   ├── StudentManager.cs
             |   |   ├── DashboardManager.cs
             │   │   └── UserManager.cs
             |   |
