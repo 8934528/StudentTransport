@@ -1,5 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Initialize components
+
     initPagination();
     initFilters();
     initModalValidation();
@@ -19,34 +19,31 @@ function initPagination() {
         link.addEventListener('click', function (e) {
             e.preventDefault();
             if (this.parentElement.classList.contains('disabled')) return;
-
-            // Remove active class from all items
+             
             paginationLinks.forEach(l => {
                 l.parentElement.classList.remove('active');
             });
-
-            // Add active class to clicked item
+             
             if (!this.textContent.includes('Previous') && !this.textContent.includes('Next')) {
                 this.parentElement.classList.add('active');
             }
-
-            // In a real app, this would reload data from the server
+             
             showNotification(`Loading page ${this.textContent}...`, 'info');
         });
     });
 }
 
-// Filter functionality
+// Initialize filter functionality
 function initFilters() {
     const searchInput = document.querySelector('.input-group input');
     const searchButton = document.querySelector('.input-group button');
     const statusFilter = document.getElementById('<%= ddlStatus.ClientID %>');
     const busFilter = document.getElementById('<%= ddlBus.ClientID %>');
-
+     
     if (searchButton) {
         searchButton.addEventListener('click', filterDrivers);
     }
-
+     
     if (searchInput) {
         searchInput.addEventListener('keyup', function (e) {
             if (e.key === 'Enter') {
@@ -54,7 +51,7 @@ function initFilters() {
             }
         });
     }
-
+     
     if (statusFilter) {
         statusFilter.addEventListener('change', filterDrivers);
     }
@@ -64,7 +61,7 @@ function initFilters() {
     }
 }
 
-// Initialize modal form validation
+// Initialize modal form  
 function initModalValidation() {
     const addDriverForm = document.querySelector('#addDriverModal form');
     if (addDriverForm) {
@@ -89,7 +86,7 @@ function initModalValidation() {
     }
 }
 
-// Filter drivers  
+// Filter drivers based on search and filter criteria
 function filterDrivers() {
     const searchInput = document.querySelector('.input-group input');
     const statusFilter = document.getElementById('<%= ddlStatus.ClientID %>');
@@ -133,11 +130,10 @@ function filterDrivers() {
 }
 
 // Show notification
-function showNotification(message, type = 'success') {
-
+function showNotification(message, type = 'success') { 
     const existingAlerts = document.querySelectorAll('.custom-notification');
     existingAlerts.forEach(alert => alert.remove());
-
+     
     const notification = document.createElement('div');
     notification.className = `custom-notification alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
     notification.style.zIndex = '1060';
@@ -150,7 +146,7 @@ function showNotification(message, type = 'success') {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     `;
-
+     
     document.body.appendChild(notification);
 
     setTimeout(() => {
@@ -158,6 +154,7 @@ function showNotification(message, type = 'success') {
         notification.style.transform = 'translateY(0)';
     }, 10);
 
+    // Auto-remove after 3 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
         setTimeout(() => {
@@ -165,6 +162,7 @@ function showNotification(message, type = 'success') {
         }, 500);
     }, 3000);
 
+    // Close button functionality
     const closeButton = notification.querySelector('.btn-close');
     if (closeButton) {
         closeButton.addEventListener('click', function () {
@@ -176,7 +174,6 @@ function showNotification(message, type = 'success') {
     }
 }
 
-// Modal form submission
 document.getElementById('<%= btnAddDriver.ClientID %>').addEventListener('click', function () {
     const form = document.querySelector('#addDriverModal form');
     let isValid = true;

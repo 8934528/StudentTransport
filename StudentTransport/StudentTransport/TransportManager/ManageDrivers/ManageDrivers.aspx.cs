@@ -11,6 +11,7 @@ namespace StudentTransport.Shared
 {
     public partial class WebForm6 : System.Web.UI.Page
     {
+        private DashboardManager manager = new DashboardManager();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
