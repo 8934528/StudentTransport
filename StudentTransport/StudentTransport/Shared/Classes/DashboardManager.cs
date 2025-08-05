@@ -5,6 +5,8 @@ using System.Web;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 
 
 namespace StudentTransport.Shared.Classes
@@ -175,9 +177,13 @@ namespace StudentTransport.Shared.Classes
             }
         }
 
-        // NEW METHOD: Add a new driver
+
+
+        // NEW METHOD: Add a new driver (with SHA256 hashing)
         public void AddDriver(string firstName, string lastName, string email, string password, string licenseNumber)
         {
+            string hashedPassword = HashPassword(password);
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -185,20 +191,18 @@ namespace StudentTransport.Shared.Classes
                 {
                     try
                     {
-                        // Insert into Users table
                         string userQuery = @"INSERT INTO Users (Email, PasswordHash, FirstName, LastName, Role) 
                                             VALUES (@Email, @Password, @FirstName, @LastName, 'Driver');
                                             SELECT SCOPE_IDENTITY();";
 
                         SqlCommand userCmd = new SqlCommand(userQuery, conn, transaction);
                         userCmd.Parameters.AddWithValue("@Email", email);
-                        userCmd.Parameters.AddWithValue("@Password", BCrypt.Net.BCrypt.HashPassword(password)); // Hash password
+                        userCmd.Parameters.AddWithValue("@Password", hashedPassword);
                         userCmd.Parameters.AddWithValue("@FirstName", firstName);
                         userCmd.Parameters.AddWithValue("@LastName", lastName);
 
                         int userId = Convert.ToInt32(userCmd.ExecuteScalar());
 
-                        // Insert into Drivers table
                         string driverQuery = @"INSERT INTO Drivers (DriverID, LicenseNumber) 
                                                VALUES (@DriverID, @LicenseNumber)";
 
@@ -217,6 +221,23 @@ namespace StudentTransport.Shared.Classes
                 }
             }
         }
+
+        // Password hashing using SHA256
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+
 
         // NEW METHOD: Delete a driver
         public void DeleteDriver(int driverId)
