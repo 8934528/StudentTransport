@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
 
-                                <a href="<%= ResolveUrl("~/About.aspx") %>" class="btn btn-system mt-5">
+                                <a href="../Shared/About/About.aspx" class="btn btn-system mt-5">
                                     <i class="fa-solid fa-circle-info me-2"></i>Learn More About System
                                 </a>
                             </div>
