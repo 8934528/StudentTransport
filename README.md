@@ -102,6 +102,16 @@
             │   ├── Site.Master.cs
             │   ├── Site.Master.designer.cs
             |   |
+            |   
+            |   ├── About/
+            |   |   ├── About.aspx
+            |   |   ├── About.aspx.cs
+            |   |   |
+            |   |   ├── css/
+            |   |   |    └── About.css
+            |   |   └── js/
+            |   |        └── About.js
+            |   |
             |   ├── Classes/
             |   |   ├── StudentManager.cs
             |   |   ├── DashboardManager.cs
