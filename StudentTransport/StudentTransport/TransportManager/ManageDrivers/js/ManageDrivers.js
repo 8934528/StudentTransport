@@ -1,8 +1,8 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     // Initialize components
-    initDriverCards();
     initPagination();
     initFilters();
+    initModalValidation();
 
     // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -10,49 +10,6 @@
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
-
-// Initialize driver card functionality
-function initDriverCards() {
-    const driverCards = document.querySelectorAll('.driver-card');
-
-    driverCards.forEach(card => {
-        const editBtn = card.querySelector('.btn-outline-primary');
-        const deleteBtn = card.querySelector('.btn-outline-danger');
-        const driverName = card.querySelector('.card-title').textContent;
-
-        // Edit button functionality
-        if (editBtn) {
-            editBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                alert(`Editing driver: ${driverName}`);
-            });
-        }
-
-        // Delete button functionality
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                if (confirm(`Are you sure you want to delete ${driverName}?`)) {
-                    card.style.opacity = '0.5';
-                    card.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        card.remove();
-                        showNotification(`${driverName} has been deleted`, 'success');
-                    }, 500);
-                }
-            });
-        }
-
-        // Card click functionality (view details)
-        card.addEventListener('click', function (e) {
-            // Don't trigger if clicking on action buttons
-            if (!e.target.closest('.actions')) {
-                const driverId = card.querySelector('.detail-item:first-child span').textContent;
-                alert(`Viewing details for driver: ${driverName} (ID: ${driverId})`);
-            }
-        });
-    });
-}
 
 // Initialize pagination
 function initPagination() {
@@ -73,25 +30,23 @@ function initPagination() {
                 this.parentElement.classList.add('active');
             }
 
-            // Simulate page change
+            // In a real app, this would reload data from the server
             showNotification(`Loading page ${this.textContent}...`, 'info');
         });
     });
 }
 
-// Initialize filter functionality
+// Filter functionality
 function initFilters() {
     const searchInput = document.querySelector('.input-group input');
     const searchButton = document.querySelector('.input-group button');
-    const statusFilter = document.getElementById('ddlStatus');
-    const busFilter = document.getElementById('ddlBus');
+    const statusFilter = document.getElementById('<%= ddlStatus.ClientID %>');
+    const busFilter = document.getElementById('<%= ddlBus.ClientID %>');
 
-    // Search button handler
     if (searchButton) {
         searchButton.addEventListener('click', filterDrivers);
     }
 
-    // Search input handler (on Enter key)
     if (searchInput) {
         searchInput.addEventListener('keyup', function (e) {
             if (e.key === 'Enter') {
@@ -100,39 +55,65 @@ function initFilters() {
         });
     }
 
-    // Filter change handlers
-    [statusFilter, busFilter].forEach(filter => {
-        if (filter) {
-            filter.addEventListener('change', filterDrivers);
-        }
-    });
+    if (statusFilter) {
+        statusFilter.addEventListener('change', filterDrivers);
+    }
+
+    if (busFilter) {
+        busFilter.addEventListener('change', filterDrivers);
+    }
 }
 
-// Filter drivers based on search and filter criteria
+// Initialize modal form validation
+function initModalValidation() {
+    const addDriverForm = document.querySelector('#addDriverModal form');
+    if (addDriverForm) {
+        addDriverForm.addEventListener('submit', function (e) {
+            let isValid = true;
+            const requiredFields = this.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                showNotification('Please fill in all required fields', 'danger');
+            }
+        });
+    }
+}
+
+// Filter drivers  
 function filterDrivers() {
     const searchInput = document.querySelector('.input-group input');
-    const statusFilter = document.getElementById('ddlStatus');
-    const busFilter = document.getElementById('ddlBus');
+    const statusFilter = document.getElementById('<%= ddlStatus.ClientID %>');
+    const busFilter = document.getElementById('<%= ddlBus.ClientID %>');
 
-    const searchTerm = searchInput.value.toLowerCase();
-    const statusValue = statusFilter.value;
-    const busValue = busFilter.value;
+    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+    const statusValue = statusFilter ? statusFilter.value : 'All';
+    const busValue = busFilter ? busFilter.value : 'All';
 
     const cards = document.querySelectorAll('.driver-card');
     let visibleCount = 0;
 
     cards.forEach(card => {
         const name = card.querySelector('.card-title').textContent.toLowerCase();
-        const driverId = card.querySelector('.detail-item:first-child span').textContent.toLowerCase();
-        const email = card.querySelector('.detail-item:last-child span').textContent.toLowerCase();
+        const license = card.querySelector('.detail-item:first-child span').textContent.toLowerCase();
         const bus = card.querySelector('.detail-item:nth-child(2) span').textContent;
+        const email = card.querySelector('.detail-item:last-child span').textContent.toLowerCase();
         const status = card.querySelector('.badge').textContent;
 
         const matchesSearch = name.includes(searchTerm) ||
-            driverId.includes(searchTerm) ||
+            license.includes(searchTerm) ||
             email.includes(searchTerm);
-        const matchesStatus = statusValue === 'All Statuses' || status === statusValue;
-        const matchesBus = busValue === 'All Buses' || bus === busValue;
+        const matchesStatus = statusValue === 'All' || status === statusValue;
+        const matchesBus = busValue === 'All' || bus === busValue;
 
         if (matchesSearch && matchesStatus && matchesBus) {
             card.style.display = '';
@@ -142,14 +123,23 @@ function filterDrivers() {
         }
     });
 
+    // Show/hide no results 
+    const noResults = document.getElementById('<%= pnlNoDrivers.ClientID %>');
+    if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
     showNotification(`Found ${visibleCount} drivers matching your criteria`, 'info');
 }
 
 // Show notification
 function showNotification(message, type = 'success') {
-    // Create notification element
+
+    const existingAlerts = document.querySelectorAll('.custom-notification');
+    existingAlerts.forEach(alert => alert.remove());
+
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
+    notification.className = `custom-notification alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
     notification.style.zIndex = '1060';
     notification.style.opacity = '0';
     notification.style.transition = 'opacity 0.5s, transform 0.5s';
@@ -161,16 +151,13 @@ function showNotification(message, type = 'success') {
         </div>
     `;
 
-    // Add to document
     document.body.appendChild(notification);
 
-    // Show notification
     setTimeout(() => {
         notification.style.opacity = '1';
         notification.style.transform = 'translateY(0)';
     }, 10);
 
-    // Auto-remove after 3 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
         setTimeout(() => {
@@ -178,7 +165,6 @@ function showNotification(message, type = 'success') {
         }, 500);
     }, 3000);
 
-    // Close button functionality
     const closeButton = notification.querySelector('.btn-close');
     if (closeButton) {
         closeButton.addEventListener('click', function () {
@@ -190,8 +176,19 @@ function showNotification(message, type = 'success') {
     }
 }
 
-// Add new driver functionality
-document.querySelector('.btn-primary').addEventListener('click', function () {
-    // In a real app, this would open a modal or redirect to an add driver page
-    alert('Opening add new driver form...');
+// Modal form submission
+document.getElementById('<%= btnAddDriver.ClientID %>').addEventListener('click', function () {
+    const form = document.querySelector('#addDriverModal form');
+    let isValid = true;
+
+    form.querySelectorAll('[required]').forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.classList.add('is-invalid');
+        }
+    });
+
+    if (!isValid) {
+        showNotification('Please fill in all required fields', 'danger');
+    }
 });

@@ -11,7 +11,7 @@
                     <p class="lead">View and manage driver information</p>
                 </div>
                 <div>
-                    <button class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
                         <i class="fas fa-plus me-2"></i>Add New Driver
                     </button>
                 </div>
@@ -25,31 +25,28 @@
                     <div class="col-md-4">
                         <label for="txtSearch" class="form-label">Search</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search drivers...">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="fas fa-search"></i>
-                            </button>
+                            <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" 
+                                placeholder="Search drivers..." AutoPostBack="true" 
+                                OnTextChanged="txtSearch_TextChanged"></asp:TextBox>
+                            <asp:Button ID="btnSearch" runat="server" CssClass="btn btn-outline-secondary" 
+                                Text="Search" OnClick="btnSearch_Click" />
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label for="ddlStatus" class="form-label">Status</label>
-                        <select class="form-select" id="ddlStatus">
-                            <option selected>All Statuses</option>
-                            <option>Active</option>
-                            <option>On Leave</option>
-                            <option>Suspended</option>
-                        </select>
+                        <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select" AutoPostBack="true"
+                            OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged">
+                            <asp:ListItem Text="All Statuses" Value="All" Selected="True" />
+                            <asp:ListItem Text="Active" Value="Active" />
+                            <asp:ListItem Text="Inactive" Value="Inactive" />
+                        </asp:DropDownList>
                     </div>
                     <div class="col-md-4">
                         <label for="ddlBus" class="form-label">Assigned Bus</label>
-                        <select class="form-select" id="ddlBus">
-                            <option selected>All Buses</option>
-                            <option>B-101</option>
-                            <option>B-102</option>
-                            <option>B-103</option>
-                            <option>B-104</option>
-                            <option>B-105</option>
-                        </select>
+                        <asp:DropDownList ID="ddlBus" runat="server" CssClass="form-select" AutoPostBack="true"
+                            OnSelectedIndexChanged="ddlBus_SelectedIndexChanged">
+                            <asp:ListItem Text="All Buses" Value="All" Selected="True" />
+                        </asp:DropDownList>
                     </div>
                 </div>
             </div>
@@ -57,298 +54,123 @@
         
         <!-- Drivers List -->
         <div class="row">
-            <!-- Driver Cards -->
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card driver-card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">David Miller</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="driver-info">
-                            <div class="driver-avatar">
-                                <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Driver">
+            <asp:Repeater ID="rptDrivers" runat="server" OnItemCommand="rptDrivers_ItemCommand">
+                <ItemTemplate>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card driver-card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0"><%# Eval("FullName") %></h5>
                             </div>
-                            <div class="driver-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-id-card me-2"></i>
-                                    <span>DRV-001</span>
+                            <div class="card-body">
+                                <div class="driver-info">
+                                    <div class="driver-avatar">
+                                        <img src="https://ui-avatars.com/api/?name=<%# Eval("FullName") %>&background=random" 
+                                            class="rounded-circle" alt="Driver">
+                                    </div>
+                                    <div class="driver-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-id-card me-2"></i>
+                                            <span><%# Eval("LicenseNumber") %></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-bus me-2"></i>
+                                            <span><%# Eval("BusNumber") != DBNull.Value ? Eval("BusNumber") : "Not Assigned" %></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-phone me-2"></i>
+                                            <span><%# Eval("PhoneNumber") %></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-envelope me-2"></i>
+                                            <span><%# Eval("Email") %></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-bus me-2"></i>
-                                    <span>B-101</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>(555) 123-4567</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>david.miller@university.edu</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between">
+                                    <span class='badge <%# Eval("StatusClass") %>'><%# Eval("Status") %></span>
+                                    <div class="actions">
+                                        <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn btn-sm btn-outline-primary"
+                                            CommandName="Edit" CommandArgument='<%# Eval("UserID") %>'>
+                                            <i class="fas fa-edit"></i>
+                                        </asp:LinkButton>
+                                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="btn btn-sm btn-outline-danger"
+                                            CommandName="Delete" CommandArgument='<%# Eval("UserID") %>'
+                                            OnClientClick="return confirm('Are you sure you want to delete this driver?');">
+                                            <i class="fas fa-trash"></i>
+                                        </asp:LinkButton>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <span class="badge bg-success">Active</span>
-                            <div class="actions">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </ItemTemplate>
+            </asp:Repeater>
             
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card driver-card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Lisa Wilson</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="driver-info">
-                            <div class="driver-avatar">
-                                <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Driver">
-                            </div>
-                            <div class="driver-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-id-card me-2"></i>
-                                    <span>DRV-002</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-bus me-2"></i>
-                                    <span>B-102</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>(555) 234-5678</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>lisa.wilson@university.edu</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <span class="badge bg-success">Active</span>
-                            <div class="actions">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            <!-- No Drivers Found Message -->
+            <asp:Panel ID="pnlNoDrivers" runat="server" CssClass="col-12 text-center py-5" Visible="false">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No drivers found matching your criteria
                 </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card driver-card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">James Taylor</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="driver-info">
-                            <div class="driver-avatar">
-                                <img src="https://placeholder.com/100" class="rounded-circle" alt="Driver">
-                            </div>
-                            <div class="driver-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-id-card me-2"></i>
-                                    <span>DRV-003</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-bus me-2"></i>
-                                    <span>B-103</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>(555) 345-6789</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>james.taylor@university.edu</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <span class="badge bg-warning">On Leave</span>
-                            <div class="actions">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card driver-card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Mary Anderson</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="driver-info">
-                            <div class="driver-avatar">
-                                <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Driver">
-                            </div>
-                            <div class="driver-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-id-card me-2"></i>
-                                    <span>DRV-004</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-bus me-2"></i>
-                                    <span>B-104</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>(555) 456-7890</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>mary.anderson@university.edu</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <span class="badge bg-success">Active</span>
-                            <div class="actions">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card driver-card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Daniel Thomas</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="driver-info">
-                            <div class="driver-avatar">
-                                <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Driver">
-                            </div>
-                            <div class="driver-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-id-card me-2"></i>
-                                    <span>DRV-005</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-bus me-2"></i>
-                                    <span>B-105</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>(555) 567-8901</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>daniel.thomas@university.edu</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <span class="badge bg-danger">Suspended</span>
-                            <div class="actions">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card driver-card">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Jennifer Jackson</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="driver-info">
-                            <div class="driver-avatar">
-                                <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Driver">
-                            </div>
-                            <div class="driver-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-id-card me-2"></i>
-                                    <span>DRV-006</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-bus me-2"></i>
-                                    <span>Not Assigned</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>(555) 678-9012</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>jennifer.jackson@university.edu</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <span class="badge bg-secondary">Inactive</span>
-                            <div class="actions">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </asp:Panel>
         </div>
         
         <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
+        <div class="d-flex justify-content-center mt-4">
+            <asp:DataPager ID="dpDrivers" runat="server" PagedControlID="rptDrivers" PageSize="6" 
+                QueryStringField="page" OnPreRender="dpDrivers_PreRender">
+                <Fields>
+                    <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="true" 
+                        ShowLastPageButton="true" FirstPageText="<<" PreviousPageText="<" 
+                        NextPageText=">" LastPageText=">>" ButtonCssClass="btn btn-outline-primary mx-1" />
+                    <asp:NumericPagerField ButtonType="Button" NumericButtonCssClass="btn btn-outline-primary mx-1" 
+                        CurrentPageLabelCssClass="btn btn-primary mx-1" />
+                </Fields>
+            </asp:DataPager>
+        </div>
+    </div>
+    
+    <!-- Add Driver Modal -->
+    <div class="modal fade" id="addDriverModal" tabindex="-1" aria-labelledby="addDriverModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDriverModalLabel">Add New Driver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="txtFirstName" class="form-label">First Name</label>
+                        <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" required="required"></asp:TextBox>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtLastName" class="form-label">Last Name</label>
+                        <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" required="required"></asp:TextBox>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtEmail" class="form-label">Email</label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" 
+                            TextMode="Email" required="required"></asp:TextBox>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtPassword" class="form-label">Password</label>
+                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" 
+                            TextMode="Password" required="required"></asp:TextBox>
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtLicense" class="form-label">License Number</label>
+                        <asp:TextBox ID="txtLicense" runat="server" CssClass="form-control" required="required"></asp:TextBox>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <asp:Button ID="btnAddDriver" runat="server" Text="Add Driver" 
+                        CssClass="btn btn-primary" OnClick="btnAddDriver_Click" />
+                </div>
+            </div>
+        </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterScripts" runat="server">

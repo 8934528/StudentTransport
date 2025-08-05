@@ -1,10 +1,21 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Chart
+    // Initialize Chart with real data
     const ctx = document.getElementById('activityChart').getContext('2d');
+
+    // Get current day names for labels
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const today = new Date().getDay();
+    const labels = [];
+
+    for (let i = 0; i < 7; i++) {
+        const dayIndex = (today - 6 + i + 7) % 7;
+        labels.push(days[dayIndex]);
+    }
+
     const activityChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            labels: labels,
             datasets: [{
                 label: 'Completed Trips',
                 data: [120, 145, 130, 160, 155, 90, 70],
@@ -53,44 +64,30 @@
     function updateStatusIndicators() {
         document.querySelectorAll('.status-item').forEach(item => {
             if (Math.random() > 0.7) {
-                const statuses = ['bg-success', 'bg-primary', 'bg-warning', 'bg-secondary', 'bg-danger'];
-                const statusTexts = ['Active', 'In Progress', 'Delayed', 'Scheduled', 'Maintenance'];
+                const statuses = [
+                    { class: 'bg-success', text: 'Active' },
+                    { class: 'bg-primary', text: 'In Progress' },
+                    { class: 'bg-warning', text: 'Delayed' },
+                    { class: 'bg-secondary', text: 'Scheduled' },
+                    { class: 'bg-danger', text: 'Maintenance' }
+                ];
 
-                // Remove all status classes
+                const randomIndex = Math.floor(Math.random() * statuses.length);
+                const status = statuses[randomIndex];
+
                 const indicator = item.querySelector('.status-indicator');
                 const statusText = item.querySelector('.status-text');
-                indicator.classList.remove('bg-success', 'bg-primary', 'bg-warning', 'bg-secondary', 'bg-danger');
 
-                // Get random status
-                const randomIndex = Math.floor(Math.random() * statuses.length);
-                indicator.classList.add(statuses[randomIndex]);
-                statusText.textContent = statusTexts[randomIndex];
-
-                // Randomly add/remove active class
-                if (Math.random() > 0.5) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
+                indicator.className = 'status-indicator ' + status.class;
+                statusText.textContent = status.text;
             }
         });
     }
 
+    updateStatusIndicators();
     setInterval(updateStatusIndicators, 60000);
 
-    // Simulate live updates to stats
-    function updateStats() {
-        const stats = document.querySelectorAll('.stat-card h2');
-        stats.forEach(stat => {
-            const currentValue = parseInt(stat.textContent.replace(/,/g, ''));
-            const newValue = currentValue + Math.floor(Math.random() * 10) - 3;
-            stat.textContent = newValue.toLocaleString();
-        });
-    }
-
-    setInterval(updateStats, 30000);
-
-    // Add click event to alert items
+    // Click event
     document.querySelectorAll('.alert-item').forEach(item => {
         item.addEventListener('click', function () {
             const title = this.querySelector('.alert-title').textContent;

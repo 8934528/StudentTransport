@@ -4,18 +4,21 @@
 
 .header-section {
     padding: 20px 0;
+    border-bottom: 1px solid #eee;
 }
 
 .driver-card {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
+    background-color: #fff;
 }
 
     .driver-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
 .driver-info {
@@ -23,6 +26,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 15px;
 }
 
 .driver-avatar {
@@ -35,6 +39,7 @@
         object-fit: cover;
         border: 3px solid #f8f9fa;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
     }
 
 .driver-details {
@@ -47,6 +52,7 @@
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.9rem;
 }
 
     .detail-item:last-child {
@@ -62,12 +68,27 @@
 .card-footer {
     background-color: #f8f9fa;
     padding: 12px 20px;
+    border-top: 1px solid rgba(0,0,0,.125);
 }
 
 .badge {
     padding: 6px 10px;
     border-radius: 20px;
     font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
 }
 
 /* Pagination */
@@ -79,9 +100,42 @@
     border-radius: 5px;
     margin: 0 3px;
     border: 1px solid #dee2e6;
+    min-width: 38px;
+    text-align: center;
 }
 
 .page-item.active .page-link {
     background-color: #6082B6;
     border-color: #6082B6;
+}
+
+/* Modal styles */
+.modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #6082B6;
+    color: white;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .driver-card {
+        margin-bottom: 20px;
+    }
+
+    .header-section .d-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-section .btn {
+        margin-top: 15px;
+    }
 }
