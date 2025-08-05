@@ -67,12 +67,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Account\Login\css\login.css" />
-    <Content Include="Account\Login\js\login.js" />
-    <Content Include="Account\Login\Login.aspx" />
-    <Content Include="Account\Register\css\register.css" />
-    <Content Include="Account\Register\js\register.js" />
-    <Content Include="Account\Register\Register.aspx" />
+    <Content Include="Account\css\login.css" />
+    <Content Include="Account\js\login.js" />
+    <Content Include="Account\Login.aspx" />
+    <Content Include="Account\css\register.css" />
+    <Content Include="Account\js\register.js" />
+    <Content Include="Account\Register.aspx" />
     <Content Include="Assets\Images\transportlogo.png" />
     <Content Include="Driver\DriDefault\css\DriDefault.css" />
     <Content Include="Driver\DriDefault\js\DriDefault.js" />
@@ -105,6 +105,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Shared\Classes\UserManager.cs" />
     <Compile Include="Shared\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -161,23 +162,18 @@
     <Compile Include="Students\StudDefault\StudDefault.aspx.designer.cs">
       <DependentUpon>StudDefault.aspx</DependentUpon>
     </Compile>
-    <Content Include="Classes\UserManager.cs" />
-    <Content Include="Classes\Student.cs" />
-    <Content Include="Classes\Driver.cs" />
-    <Content Include="Classes\Bus.cs" />
-    <Content Include="Classes\Schedule.cs" />
-    <Compile Include="Account\Login\Login.aspx.cs">
+    <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Account\Login\Login.aspx.designer.cs">
+    <Compile Include="Account\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Account\Register\Register.aspx.cs">
+    <Compile Include="Account\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Account\Register\Register.aspx.designer.cs">
+    <Compile Include="Account\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
