@@ -9,9 +9,8 @@
 ## Project Structure
 
             StudentTransport/
-            ├── App_Code/
-            │   ├── Classes/
-            │   │   └── UserManager.cs
+            ├── Models/
+            │   ├── UserManager.cs
             │   ├── Student.cs
             │   ├── Driver.cs
             │   ├── Bus.cs
@@ -69,18 +68,14 @@
             │   │   ├── ManageDrivers.aspx
             │   │   └── ManageDrivers.aspx.cs
             ├── Account/
-            │   ├── Login/
             |   |   ├── css/
-            |   |   |   └──login.css
-            |   |   ├── js/
-            |   |   |   └── login.js
-            │   │   ├── Login.aspx
-            │   │   └── Login.aspx.cs
-            │   ├── Register/
-            |   |   ├── css/
+            |   |   |   ├── login.css
             |   |   |   └── register.css
             |   |   ├── js/
+            |   |   |   ├── login.js
             |   |   |   └── register.js
+            │   │   ├── Login.aspx
+            │   │   ├── Login.aspx.cs
             │   │   ├── Register.aspx
             │   │   └── Register.aspx.cs
             ├── Shared/
