@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using StudentTransport.Shared.Classes;
+using System.Text;
 
 namespace StudentTransport.Shared
 {
@@ -35,14 +36,15 @@ namespace StudentTransport.Shared
         {
             DataTable schedule = studentManager.GetWeeklySchedule(weekStart);
             ViewState["WeeklySchedule"] = schedule;
-            lblCurrentWeek.Text = weekStart.ToString("MMM dd, yyyy") + " - " + weekStart.AddDays(6).ToString("MMM dd, yyyy");
-
+            lblCurrentWeek.InnerText = "Week of " + weekStart.ToString("MMM dd, yyyy");
         }
 
         private void LoadUpcomingBookings(int studentId)
         {
-            rptUpcomingBookings.DataSource = studentManager.GetUpcomingBookings(studentId);
+            DataTable upcomingBookings = studentManager.GetUpcomingBookings(studentId);
+            rptUpcomingBookings.DataSource = upcomingBookings;
             rptUpcomingBookings.DataBind();
+            pnlNoUpcomingBookings.Visible = upcomingBookings.Rows.Count == 0;
         }
 
         private DateTime GetStartOfWeek(DateTime dt, DayOfWeek startOfWeek)
@@ -51,7 +53,7 @@ namespace StudentTransport.Shared
             return dt.AddDays(-1 * diff).Date;
         }
 
-        protected void rptUpcomingBookings_ItemCommand(object source, RepeaterCommandEventArgs e)
+        protected void rptUpcomingBookings_ItemCommand(object source, System.Web.UI.WebControls.RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "Cancel")
             {
@@ -71,6 +73,7 @@ namespace StudentTransport.Shared
                 }
             }
         }
+
 
         protected void btnPrevWeek_Click(object sender, EventArgs e)
         {

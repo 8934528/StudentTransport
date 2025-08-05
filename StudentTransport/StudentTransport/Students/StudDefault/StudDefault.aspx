@@ -8,8 +8,10 @@
     <div class="student-dashboard">
         <div class="welcome-section mb-4">
             <h1 class="display-5 fw-bold">Student Dashboard</h1>
-            <p class="lead">Welcome back,
-                <asp:Literal ID="litStudentName" runat="server"></asp:Literal>!</p>
+            <p class="lead">
+                Welcome back,
+                <asp:Literal ID="litStudentName" runat="server"></asp:Literal>!
+            </p>
         </div>
 
         <div class="row">
@@ -21,7 +23,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-3">
-                            <a href="../Schedule/Schedule.aspx" class="btn btn-outline-primary text-start">
+                            <a href="Schedule.aspx" class="btn btn-outline-primary text-start">
                                 <i class="fas fa-calendar-alt me-3"></i>View Schedule
                             </a>
                             <button class="btn btn-outline-success text-start">
@@ -30,9 +32,9 @@
                             <button class="btn btn-outline-info text-start">
                                 <i class="fas fa-map-marker-alt me-3"></i>Track Bus
                             </button>
-                            <button class="btn btn-outline-warning text-start">
+                            <a href="BookingHistory.aspx" class="btn btn-outline-warning text-start">
                                 <i class="fas fa-history me-3"></i>Ride History
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -71,8 +73,10 @@
                                         <div class="name">
                                             <asp:Literal ID="litDepartureStation" runat="server"></asp:Literal>
                                         </div>
-                                        <div class="time">Departure:
-                                            <asp:Literal ID="litDepartureTime2" runat="server"></asp:Literal></div>
+                                        <div class="time">
+                                            Departure:
+                                            <asp:Literal ID="litDepartureTime2" runat="server"></asp:Literal>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -89,8 +93,10 @@
                                         <div class="name">
                                             <asp:Literal ID="litArrivalStation" runat="server"></asp:Literal>
                                         </div>
-                                        <div class="time">Arrival:
-                                            <asp:Literal ID="litArrivalTime" runat="server"></asp:Literal></div>
+                                        <div class="time">
+                                            Arrival:
+                                            <asp:Literal ID="litArrivalTime" runat="server"></asp:Literal>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -164,6 +170,11 @@
                             </table>
                         </FooterTemplate>
                     </asp:Repeater>
+
+                    <asp:Panel ID="pnlNoActiveBuses" runat="server" CssClass="text-center py-3" Visible="false">
+                        <i class="fas fa-bus-slash fa-2x mb-2"></i>
+                        <p>No active buses found</p>
+                    </asp:Panel>
                 </div>
             </div>
         </div>
@@ -192,6 +203,11 @@
                             </div>
                         </ItemTemplate>
                     </asp:Repeater>
+
+                    <asp:Panel ID="pnlNoRecentBookings" runat="server" CssClass="text-center py-3" Visible="false">
+                        <i class="fas fa-calendar-times fa-2x mb-2"></i>
+                        <p>No recent bookings found</p>
+                    </asp:Panel>
                 </div>
             </div>
         </div>

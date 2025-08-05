@@ -33,13 +33,13 @@ namespace StudentTransport.Shared
         protected global::System.Web.UI.WebControls.Button btnNextWeek;
 
         /// <summary>
-        /// currentWeek control.
+        /// lblCurrentWeek control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentWeek;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCurrentWeek;
 
         /// <summary>
         /// litCalendarSlots control.
@@ -121,6 +121,15 @@ namespace StudentTransport.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnConfirmBooking;
+
+        /// <summary>
+        /// btnCancelSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelSelection;
 
         /// <summary>
         /// rptUpcomingBookings control.

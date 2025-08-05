@@ -123,6 +123,15 @@ namespace StudentTransport.Shared
         protected global::System.Web.UI.WebControls.Repeater rptActiveBuses;
 
         /// <summary>
+        /// pnlNoActiveBuses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoActiveBuses;
+
+        /// <summary>
         /// rptRecentBookings control.
         /// </summary>
         /// <remarks>
@@ -130,5 +139,14 @@ namespace StudentTransport.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptRecentBookings;
+
+        /// <summary>
+        /// pnlNoRecentBookings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoRecentBookings;
     }
 }

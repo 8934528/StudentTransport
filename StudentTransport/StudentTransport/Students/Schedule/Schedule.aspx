@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <div class="schedule-calendar">
                             <div class="calendar-header">
-                                <h4 id="currentWeek" runat="server">Week of May 15, 2023</h4>
+                                <h4 id="lblCurrentWeek" runat="server">Week of May 15, 2023</h4>
                             </div>
 
                             <div class="calendar-days">
@@ -61,7 +61,7 @@
                                 <i class="fas fa-calendar-alt fa-3x mb-3"></i>
                                 <p>Select a time slot to book a ride</p>
                             </asp:Panel>
-                            <asp:Panel ID="pnlSelectionDetails" runat="server" CssClass="selection-details d-none">
+                            <asp:Panel ID="pnlSelectionDetails" runat="server" CssClass="selection-details" Visible="false">
                                 <h5 class="booking-time" id="litBookingTime" runat="server">Monday, May 15 - 8:00 AM</h5>
                                 <div class="route-details mb-3">
                                     <div class="location">
@@ -83,9 +83,8 @@
                                 </div>
                                 <asp:Button ID="btnConfirmBooking" runat="server" CssClass="btn btn-success w-100"
                                     Text="Confirm Booking" OnClick="btnConfirmBooking_Click" />
-                                <button class="btn btn-outline-secondary w-100 mt-2" id="btnCancelSelection">
-                                    Cancel Selection
-                                </button>
+                                <asp:Button ID="btnCancelSelection" runat="server" CssClass="btn btn-outline-secondary w-100 mt-2"
+                                    Text="Cancel Selection" OnClick="btnCancelSelection_Click" />
                             </asp:Panel>
                         </div>
                     </div>
@@ -106,7 +105,8 @@
                                         <div class="booking-route"><%# Eval("Route") %></div>
                                         <div class="booking-bus"><%# Eval("BusNumber") %></div>
                                         <asp:Button ID="btnCancelBooking" runat="server" CssClass="btn btn-sm btn-outline-danger"
-                                            CommandName="Cancel" CommandArgument='<%# Eval("BookingID") %>' Text="X" />
+                                            CommandName="Cancel" CommandArgument='<%# Eval("BookingID") %>' Text="X"
+                                            OnClientClick="return confirm('Are you sure you want to cancel this booking?');" />
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>

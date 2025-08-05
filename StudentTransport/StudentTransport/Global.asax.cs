@@ -24,10 +24,10 @@ namespace StudentTransport
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            //if (Request.Url.AbsolutePath == "/")
-            //{
-            //    Response.Redirect("~/Account/Login.aspx");
-            //}
+            if (Request.Url.AbsolutePath == "/")
+            {
+                Response.Redirect("~/Account/Login.aspx");
+            }
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
