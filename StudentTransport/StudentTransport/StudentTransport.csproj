@@ -79,6 +79,9 @@
     <Content Include="Driver\BusStatus\css\BusStatus.css" />
     <Content Include="Driver\BusStatus\js\BusStatus.js" />
     <Content Include="Global.asax" />
+    <Content Include="Shared\About\About.aspx" />
+    <Content Include="Shared\About\css\About.css" />
+    <Content Include="Shared\About\js\About.js" />
     <Content Include="Shared\css\layout.css" />
     <Content Include="Shared\css\site.css" />
     <Content Include="Shared\js\common.js" />
@@ -118,6 +121,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\About\About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Shared\About\About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="Shared\Classes\DashboardManager.cs" />
     <Compile Include="Shared\Classes\StudentManager.cs" />
