@@ -22,8 +22,8 @@
                         <div class="current-status mb-4">
                             <h6 class="text-muted mb-3">Current Status</h6>
                             <div class="d-flex align-items-center">
-                                <div class="status-indicator bg-success rounded-circle me-3"></div>
-                                <h3 class="fw-bold mb-0">Active</h3>
+                                <div id="currentStatusIndicator" class="status-indicator bg-success rounded-circle me-3"></div>
+                                <h3 id="currentStatusText" class="fw-bold mb-0">Active</h3>
                             </div>
                         </div>
 
@@ -31,16 +31,16 @@
                             <h6 class="text-muted mb-3">Set New Status</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <div class="status-option active" data-status="active">
+                                    <div class="status-option active" data-status="Ready">
                                         <div class="status-icon bg-success">
                                             <i class="fas fa-check"></i>
                                         </div>
-                                        <h5>Active</h5>
-                                        <p>Bus is in service</p>
+                                        <h5>Ready</h5>
+                                        <p>Bus is ready for service</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="status-option" data-status="offduty">
+                                    <div class="status-option" data-status="OffDuty">
                                         <div class="status-icon bg-secondary">
                                             <i class="fas fa-power-off"></i>
                                         </div>
@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="status-option" data-status="maintenance">
+                                    <div class="status-option" data-status="Maintenance">
                                         <div class="status-icon bg-warning">
                                             <i class="fas fa-tools"></i>
                                         </div>
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="status-option" data-status="out">
+                                    <div class="status-option" data-status="OutOfService">
                                         <div class="status-icon bg-danger">
                                             <i class="fas fa-exclamation-triangle"></i>
                                         </div>
@@ -70,7 +70,8 @@
                         </div>
                     </div>
                     <div class="card-footer bg-light text-center">
-                        <button id="btnUpdateStatus" class="btn btn-primary btn-lg w-100" disabled="disabled">
+                        <button id="btnUpdateStatus" class="btn btn-primary btn-lg w-100"
+                            onclick="updateStatus()" disabled="disabled">
                             <i class="fas fa-sync-alt me-2"></i>Update Status
                         </button>
                     </div>
@@ -89,14 +90,16 @@
                                 <i class="fas fa-bus fa-2x text-primary"></i>
                                 <div>
                                     <h6>Bus Number</h6>
-                                    <h4 class="fw-bold">D-102</h4>
+                                    <h4 class="fw-bold">
+                                        <asp:Literal ID="litBusNumber" runat="server">D-102</asp:Literal></h4>
                                 </div>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-users fa-2x text-success"></i>
                                 <div>
                                     <h6>Capacity</h6>
-                                    <h4 class="fw-bold">40 Passengers</h4>
+                                    <h4 class="fw-bold">
+                                        <asp:Literal ID="litCapacity" runat="server">40 Passengers</asp:Literal></h4>
                                 </div>
                             </div>
                             <div class="detail-item">
@@ -104,7 +107,7 @@
                                 <div>
                                     <h6>Fuel Level</h6>
                                     <div class="progress mt-2" style="height: 20px;">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%">75%</div>
+                                        <div id="fuelProgress" class="progress-bar bg-success" role="progressbar" style="width: 75%">75%</div>
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +115,8 @@
                                 <i class="fas fa-road fa-2x text-danger"></i>
                                 <div>
                                     <h6>Mileage</h6>
-                                    <h4 class="fw-bold">12,345 km</h4>
+                                    <h4 class="fw-bold">
+                                        <asp:Literal ID="litMileage" runat="server">12,345 km</asp:Literal></h4>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +127,8 @@
                                 <div class="map-point">
                                     <i class="fas fa-map-marker-alt fa-2x text-danger"></i>
                                 </div>
-                                <div class="location-text">Main Campus Bus Station</div>
+                                <div class="location-text">
+                                    <asp:Literal ID="litLocation" runat="server">Main Campus Bus Station</asp:Literal></div>
                             </div>
                             <button class="btn btn-outline-primary mt-3 w-100">
                                 <i class="fas fa-location-arrow me-2"></i>Update Location
@@ -141,44 +146,65 @@
             </div>
             <div class="card-body">
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-success"></div>
-                        <div class="timeline-content">
-                            <h6>Active</h6>
-                            <p class="text-muted">Bus is in service</p>
-                            <small class="text-muted">Today, 08:15 AM</small>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-secondary"></div>
-                        <div class="timeline-content">
-                            <h6>Off Duty</h6>
-                            <p class="text-muted">End of shift</p>
-                            <small class="text-muted">Yesterday, 06:30 PM</small>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-success"></div>
-                        <div class="timeline-content">
-                            <h6>Active</h6>
-                            <p class="text-muted">Bus is in service</p>
-                            <small class="text-muted">Yesterday, 07:45 AM</small>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-warning"></div>
-                        <div class="timeline-content">
-                            <h6>Maintenance</h6>
-                            <p class="text-muted">Routine service</p>
-                            <small class="text-muted">2 days ago, 09:00 AM</small>
-                        </div>
-                    </div>
+                    <asp:Repeater ID="rptStatusHistory" runat="server">
+                        <ItemTemplate>
+                            <div class="timeline-item">
+                                <div class='timeline-point <%# Eval("StatusClass") %>'></div>
+                                <div class="timeline-content">
+                                    <h6><%# Eval("Status") %></h6>
+                                    <p class="text-muted">Status updated</p>
+                                    <small class="text-muted"><%# Eval("StatusTime") %></small>
+                                </div>
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Hidden fields -->
+    <asp:HiddenField ID="hdnDriverId" runat="server" />
+    <asp:HiddenField ID="hdnBusId" runat="server" />
+    <asp:HiddenField ID="hdnCurrentStatus" runat="server" />
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterScripts" runat="server">
     <script src="js/BusStatus.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const currentStatus = document.getElementById('<%= hdnCurrentStatus.ClientID %>').value;
+            updateStatusIndicator(currentStatus);
+        });
+
+        function updateStatusIndicator(status) {
+            const indicator = document.getElementById('currentStatusIndicator');
+            const statusText = document.getElementById('currentStatusText');
+
+            indicator.className = 'status-indicator rounded-circle me-3';
+            statusText.className = 'fw-bold mb-0';
+
+            switch (status) {
+                case 'Ready':
+                    indicator.classList.add('bg-success');
+                    statusText.textContent = 'Ready';
+                    break;
+                case 'OffDuty':
+                    indicator.classList.add('bg-secondary');
+                    statusText.textContent = 'Off Duty';
+                    break;
+                case 'Maintenance':
+                    indicator.classList.add('bg-warning');
+                    statusText.textContent = 'Maintenance';
+                    break;
+                case 'OutOfService':
+                    indicator.classList.add('bg-danger');
+                    statusText.textContent = 'Out of Service';
+                    break;
+                default:
+                    indicator.classList.add('bg-success');
+                    statusText.textContent = 'Active';
+            }
+        }
+    </script>
 </asp:Content>

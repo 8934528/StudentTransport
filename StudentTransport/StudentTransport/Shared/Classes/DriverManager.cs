@@ -159,5 +159,49 @@ namespace StudentTransport.Shared.Classes
                 return dt;
             }
         }
+
+        // Get extended bus details
+        public DataTable GetBusDetails(int busId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT 
+                            b.BusNumber, b.Capacity, b.Mileage,
+                            s.StationName AS CurrentLocation,
+                            bl.Status AS CurrentStatus
+                        FROM Buses b
+                        LEFT JOIN Stations s ON b.CurrentStationID = s.StationID
+                        LEFT JOIN (
+                            SELECT BusID, Status
+                            FROM BusStatusLog
+                            WHERE StatusID = (
+                                SELECT MAX(StatusID) 
+                                FROM BusStatusLog 
+                                WHERE BusID = @BusId
+                            )
+                        ) bl ON b.BusID = bl.BusID
+                        WHERE b.BusID = @BusId";
+
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@BusId", busId);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        // Update bus location
+        public void UpdateBusLocation(int busId, int stationId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "UPDATE Buses SET CurrentStationID = @StationId WHERE BusID = @BusId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@StationId", stationId);
+                cmd.Parameters.AddWithValue("@BusId", busId);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
