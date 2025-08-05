@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StudentTransport.Account.Register
+namespace StudentTransport.Account
 {
 
 

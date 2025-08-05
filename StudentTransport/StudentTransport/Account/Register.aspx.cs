@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using StudentTransport.Shared.Classes;
 
-namespace StudentTransport.Account.Register
+namespace StudentTransport.Account
 {
     public partial class Register : System.Web.UI.Page
     {
@@ -74,9 +74,9 @@ namespace StudentTransport.Account.Register
             {
                 ShowToast("success", "Registration Successful", "Your account has been created! Redirecting to login...");
 
-                // Redirect after delay
+                string loginUrl = ResolveUrl("~/Account/Login.aspx");
                 ClientScript.RegisterStartupScript(GetType(), "Redirect",
-                    "setTimeout(function(){ window.location.href = 'Login.aspx'; }, 3000);", true);
+                    $"setTimeout(function(){{ window.location.href = '{loginUrl}'; }}, 3000);", true);
             }
             else
             {

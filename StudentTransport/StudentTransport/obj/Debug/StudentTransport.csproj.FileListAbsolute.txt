@@ -111,7 +111,6 @@ C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\bi
 C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\obj\Debug\StudentTransport.csproj.AssemblyReference.cache
 C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\obj\Debug\StudentTransport.csproj.CoreCompileInputs.cache
 C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\obj\Debug\StudentTransport.csproj.CopyComplete
 C:\Users\Mihlali\Documents\StudentTransport\StudentTransport\StudentTransport\obj\Debug\StudentTransport.dll

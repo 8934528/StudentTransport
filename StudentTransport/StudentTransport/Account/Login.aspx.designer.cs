@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StudentTransport.Account.Login
+namespace StudentTransport.Account
 {
 
 
-    public partial class login
+    public partial class Login
     {
 
         /// <summary>

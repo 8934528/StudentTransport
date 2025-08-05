@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="StudentTransport.Account.Login.login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="StudentTransport.Account.Login" %>
 
 <!DOCTYPE html>
 
@@ -49,8 +49,8 @@
                         <asp:Button runat="server" ID="btnLogin" Text="Login" CssClass="btn-login w-100 mb-3" OnClick="btnLogin_Click" />
 
                         <div class="text-center register-link">
-                            Don't have an account? <a href="Register.aspx">Register here</a>
-                        </div>
+                            Don't have an account? <a href="<%= ResolveUrl("~/Account/Register.aspx") %>">Sign in</a>
+</div>
 
                         <asp:Label runat="server" ID="lblMessage" CssClass="alert alert-danger mt-3 d-none"></asp:Label>
                     </form>
