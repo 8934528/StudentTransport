@@ -1,14 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Shared/Site.Master" AutoEventWireup="true" CodeBehind="StudDefault.aspx.cs" Inherits="StudentTransport.Shared.WebForm3" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <link href="css/StudDefault.css" rel="stylesheet" />
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="student-dashboard">
         <div class="welcome-section mb-4">
             <h1 class="display-5 fw-bold">Student Dashboard</h1>
-            <p class="lead">Welcome back, <asp:Literal ID="litStudentName" runat="server"></asp:Literal>!</p>
+            <p class="lead">Welcome back,
+                <asp:Literal ID="litStudentName" runat="server"></asp:Literal>!</p>
         </div>
-        
+
         <div class="row">
             <!-- Quick Actions -->
             <div class="col-lg-4 mb-4">
@@ -34,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Next Ride -->
             <div class="col-lg-8 mb-4">
                 <div class="card h-100">
@@ -42,63 +45,76 @@
                         <h5 class="card-title mb-0">Your Next Ride</h5>
                     </div>
                     <div class="card-body">
-                        <div class="next-ride-card">
+                        <asp:Panel ID="pnlNoNextRide" runat="server" CssClass="text-center py-4">
+                            <i class="fas fa-bus fa-3x text-muted mb-3"></i>
+                            <p>No upcoming rides scheduled</p>
+                        </asp:Panel>
+
+                        <asp:Panel ID="pnlNextRide" runat="server" CssClass="next-ride-card" Visible="false">
                             <div class="ride-header">
                                 <div class="bus-info">
                                     <i class="fas fa-bus me-2"></i>
-                                    <span>Bus #S-205</span>
+                                    <span>Bus #<asp:Literal ID="litBusNumber" runat="server"></asp:Literal></span>
                                     <span class="badge bg-success ms-2">On Time</span>
                                 </div>
-                                <div class="time">Today, 10:30 AM</div>
+                                <div class="time">
+                                    <asp:Literal ID="litDepartureTime" runat="server"></asp:Literal>
+                                </div>
                             </div>
-                            
+
                             <div class="route-details">
                                 <div class="location from">
                                     <div class="location-icon">
                                         <i class="fas fa-map-marker-alt"></i>
                                     </div>
                                     <div class="location-info">
-                                        <div class="name">Harmony Residence</div>
-                                        <div class="time">Departure: 10:30 AM</div>
+                                        <div class="name">
+                                            <asp:Literal ID="litDepartureStation" runat="server"></asp:Literal>
+                                        </div>
+                                        <div class="time">Departure:
+                                            <asp:Literal ID="litDepartureTime2" runat="server"></asp:Literal></div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="route-line">
                                     <div class="line"></div>
                                     <div class="stops">2 stops (15 mins)</div>
                                 </div>
-                                
+
                                 <div class="location to">
                                     <div class="location-icon">
                                         <i class="fas fa-flag-checkered"></i>
                                     </div>
                                     <div class="location-info">
-                                        <div class="name">Science Campus</div>
-                                        <div class="time">Arrival: 10:45 AM</div>
+                                        <div class="name">
+                                            <asp:Literal ID="litArrivalStation" runat="server"></asp:Literal>
+                                        </div>
+                                        <div class="time">Arrival:
+                                            <asp:Literal ID="litArrivalTime" runat="server"></asp:Literal></div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="ride-footer">
                                 <div class="driver-info">
                                     <i class="fas fa-user me-2"></i>
-                                    Driver: Michael Johnson
+                                    Driver:
+                                    <asp:Literal ID="litDriverName" runat="server"></asp:Literal>
                                 </div>
                                 <div class="actions">
                                     <button class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-map-marked-alt me-1"></i> Track
+                                        <i class="fas fa-map-marked-alt me-1"></i>Track
                                     </button>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-times me-1"></i> Cancel
-                                    </button>
+                                    <asp:Button ID="btnCancelRide" runat="server" CssClass="btn btn-sm btn-outline-danger"
+                                        Text="Cancel" OnClick="btnCancelRide_Click" />
                                 </div>
                             </div>
-                        </div>
+                        </asp:Panel>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Active Buses -->
         <div class="card mb-4">
             <div class="card-header bg-info text-white">
@@ -111,76 +127,47 @@
                             <i class="fas fa-user-circle"></i>
                             <div class="pulse-ring"></div>
                         </div>
-                        <div class="bus-location" style="top: 40%; left: 30%;">
-                            <i class="fas fa-bus"></i>
-                            <span class="bus-number">S-205</span>
-                        </div>
-                        <div class="bus-location" style="top: 60%; left: 70%;">
-                            <i class="fas fa-bus"></i>
-                            <span class="bus-number">S-208</span>
-                        </div>
-                        <div class="bus-location" style="top: 30%; left: 80%;">
-                            <i class="fas fa-bus"></i>
-                            <span class="bus-number">S-212</span>
-                        </div>
+                        <!-- Bus locations will be added dynamically -->
                     </div>
                 </div>
-                
+
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <asp:Repeater ID="rptActiveBuses" runat="server">
+                        <HeaderTemplate>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Bus #</th>
+                                        <th>Route</th>
+                                        <th>Status</th>
+                                        <th>Last Update</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        </HeaderTemplate>
+                        <ItemTemplate>
                             <tr>
-                                <th>Bus #</th>
-                                <th>Route</th>
-                                <th>Next Stop</th>
-                                <th>Status</th>
-                                <th>Estimated Arrival</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>S-205</td>
-                                <td>Harmony Res → Science Campus</td>
-                                <td>Main Library</td>
-                                <td><span class="badge bg-success">On Time</span></td>
-                                <td>10:30 AM</td>
+                                <td><%# Eval("BusNumber") %></td>
+                                <td><%# Eval("Route") %></td>
+                                <td><span class='badge <%# Eval("StatusClass") %>'><%# Eval("Status") %></span></td>
+                                <td><%# Convert.ToDateTime(Eval("StatusTime")).ToString("hh:mm tt") %></td>
                                 <td>
                                     <button class="btn btn-sm btn-primary">
-                                        <i class="fas fa-eye me-1"></i> View
+                                        <i class="fas fa-eye me-1"></i>View
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>S-208</td>
-                                <td>Garden Res → Engineering Campus</td>
-                                <td>Student Center</td>
-                                <td><span class="badge bg-warning">Delayed</span></td>
-                                <td>10:45 AM</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">
-                                        <i class="fas fa-eye me-1"></i> View
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>S-212</td>
-                                <td>Mountain View → Main Campus</td>
-                                <td>Sports Complex</td>
-                                <td><span class="badge bg-success">On Time</span></td>
-                                <td>11:15 AM</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">
-                                        <i class="fas fa-eye me-1"></i> View
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
                 </div>
             </div>
         </div>
-        
+
         <!-- Recent Bookings -->
         <div class="card">
             <div class="card-header bg-dark text-white">
@@ -188,44 +175,29 @@
             </div>
             <div class="card-body">
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-success"></div>
-                        <div class="timeline-content">
-                            <h6>Science Campus → Harmony Res</h6>
-                            <p class="text-muted">Bus #S-205 | Driver: Michael Johnson</p>
-                            <div class="d-flex justify-content-between">
-                                <small class="text-muted">Today, 08:30 AM</small>
-                                <span class="badge bg-success">Completed</span>
+                    <asp:Repeater ID="rptRecentBookings" runat="server">
+                        <ItemTemplate>
+                            <div class="timeline-item">
+                                <div class="timeline-point <%# Eval("StatusClass") %>"></div>
+                                <div class="timeline-content">
+                                    <h6><%# Eval("Route") %></h6>
+                                    <p class="text-muted">Bus #<%# Eval("BusNumber") %> | Driver: <%# Eval("DriverName") %></p>
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-muted">
+                                            <%# Convert.ToDateTime(Eval("DepartureTime")).ToString("MMM dd, hh:mm tt") %>
+                                        </small>
+                                        <span class='badge <%# Eval("StatusClass") %>'><%# Eval("Status") %></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-info"></div>
-                        <div class="timeline-content">
-                            <h6>Engineering Campus → Garden Res</h6>
-                            <p class="text-muted">Bus #S-208 | Driver: Sarah Williams</p>
-                            <div class="d-flex justify-content-between">
-                                <small class="text-muted">Yesterday, 05:15 PM</small>
-                                <span class="badge bg-info">In Progress</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-point bg-primary"></div>
-                        <div class="timeline-content">
-                            <h6>Main Campus → Mountain View</h6>
-                            <p class="text-muted">Bus #S-212 | Driver: Robert Davis</p>
-                            <div class="d-flex justify-content-between">
-                                <small class="text-muted">Yesterday, 03:45 PM</small>
-                                <span class="badge bg-primary">Upcoming</span>
-                            </div>
-                        </div>
-                    </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </div>
             </div>
         </div>
     </div>
 </asp:Content>
+
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterScripts" runat="server">
     <script src="js/StudDefault.js"></script>
 </asp:Content>

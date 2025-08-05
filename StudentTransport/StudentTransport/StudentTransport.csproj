@@ -120,6 +120,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Shared\Classes\DashboardManager.cs" />
+    <Compile Include="Shared\Classes\StudentManager.cs" />
     <Compile Include="Shared\Classes\UserManager.cs" />
     <Compile Include="Shared\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
