@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Trans - Transport Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="css/layout.css" rel="stylesheet" />
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
@@ -26,16 +27,16 @@
                 <asp:Button runat="server" ID="btnLogout" Text="Logout" CssClass="btn-logout" />
             </div>
         </header>
-        
+
         <nav>
             <asp:PlaceHolder runat="server" ID="phNavigation" />
         </nav>
-        
+
         <main>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </main>
-        
+
         <footer>
             <div class="footer-content">
                 <div class="copyright">&copy; <%= DateTime.Now.Year %> Campus Trans - University Transport Management System</div>
@@ -43,6 +44,7 @@
             </div>
         </footer>
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="js/common.js"></script>
     <asp:ContentPlaceHolder ID="FooterScripts" runat="server">
     </asp:ContentPlaceHolder>

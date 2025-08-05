@@ -11,7 +11,12 @@ namespace StudentTransport.Shared
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserRole"] as string != "Driver")
+            {
+                Response.Redirect("~/Account/Login/Login.aspx");
+            }
 
+            // Load driver-specific data
         }
     }
 }

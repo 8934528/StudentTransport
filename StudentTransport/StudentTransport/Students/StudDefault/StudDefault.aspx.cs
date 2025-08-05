@@ -11,7 +11,12 @@ namespace StudentTransport.Shared
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserRole"] as string != "Student")
+            {
+                Response.Redirect("~/Account/Login/Login.aspx");
+            }
 
+            // Load student-specific data
         }
     }
 }

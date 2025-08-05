@@ -18,6 +18,26 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
+function showToast(type, title, message) {
+    const colors = {
+        success: "#50C878",
+        error: "#FF6B6B",
+        info: "#3498db",
+        warning: "#FEBE10"
+    };
+
+    Toastify({
+        text: `<strong>${title}</strong><br>${message}`,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: colors[type],
+        stopOnFocus: true,
+        escapeMarkup: false
+    }).showToast();
+}
+
 // Smooth scrolling for anchor links
 document.addEventListener('DOMContentLoaded', function () {
     // Add smooth scrolling to all anchor links

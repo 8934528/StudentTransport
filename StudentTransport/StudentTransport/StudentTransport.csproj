@@ -78,6 +78,7 @@
     <Content Include="Driver\DriDefault\js\DriDefault.js" />
     <Content Include="Driver\BusStatus\css\BusStatus.css" />
     <Content Include="Driver\BusStatus\js\BusStatus.js" />
+    <Content Include="Global.asax" />
     <Content Include="Shared\css\layout.css" />
     <Content Include="Shared\css\site.css" />
     <Content Include="Shared\js\common.js" />
@@ -101,6 +102,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Shared\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -157,11 +161,11 @@
     <Compile Include="Students\StudDefault\StudDefault.aspx.designer.cs">
       <DependentUpon>StudDefault.aspx</DependentUpon>
     </Compile>
-    <Content Include="App_Code\Classes\UserManager.cs" />
-    <Content Include="App_Code\Student.cs" />
-    <Content Include="App_Code\Driver.cs" />
-    <Content Include="App_Code\Bus.cs" />
-    <Content Include="App_Code\Schedule.cs" />
+    <Content Include="Classes\UserManager.cs" />
+    <Content Include="Classes\Student.cs" />
+    <Content Include="Classes\Driver.cs" />
+    <Content Include="Classes\Bus.cs" />
+    <Content Include="Classes\Schedule.cs" />
     <Compile Include="Account\Login\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
