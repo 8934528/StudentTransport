@@ -1,14 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Shared/Site.Master" AutoEventWireup="true" CodeBehind="DriDefault.aspx.cs" Inherits="StudentTransport.Shared.WebForm1" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">    
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <link href="css/DriDefault.css" rel="stylesheet" />
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="driver-dashboard">
         <div class="welcome-section mb-4">
             <h1 class="display-5 fw-bold">Driver Dashboard</h1>
-            <p class="lead">Welcome back, <asp:Literal ID="litDriverName" runat="server"></asp:Literal>!</p>
+            <p class="lead">Welcome back,
+                <asp:Literal ID="litDriverName" runat="server"></asp:Literal>!</p>
         </div>
-        
+
         <div class="row">
             <!-- Bus Status Card -->
             <div class="col-lg-6 mb-4">
@@ -46,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Today's Schedule -->
             <div class="col-lg-6 mb-4">
                 <div class="card h-100">
@@ -55,48 +58,25 @@
                     </div>
                     <div class="card-body">
                         <div class="schedule-list">
-                            <div class="schedule-item active">
-                                <div class="time">08:00 AM</div>
-                                <div class="route">
-                                    <div class="from">Main Campus</div>
-                                    <i class="fas fa-arrow-right mx-2"></i>
-                                    <div class="to">Harmony Res</div>
-                                </div>
-                                <div class="status">In Progress</div>
-                            </div>
-                            <div class="schedule-item">
-                                <div class="time">10:30 AM</div>
-                                <div class="route">
-                                    <div class="from">Harmony Res</div>
-                                    <i class="fas fa-arrow-right mx-2"></i>
-                                    <div class="to">Science Campus</div>
-                                </div>
-                                <div class="status">Upcoming</div>
-                            </div>
-                            <div class="schedule-item">
-                                <div class="time">01:15 PM</div>
-                                <div class="route">
-                                    <div class="from">Science Campus</div>
-                                    <i class="fas fa-arrow-right mx-2"></i>
-                                    <div class="to">Engineering Campus</div>
-                                </div>
-                                <div class="status">Upcoming</div>
-                            </div>
-                            <div class="schedule-item">
-                                <div class="time">03:45 PM</div>
-                                <div class="route">
-                                    <div class="from">Engineering Campus</div>
-                                    <i class="fas fa-arrow-right mx-2"></i>
-                                    <div class="to">Main Campus</div>
-                                </div>
-                                <div class="status">Upcoming</div>
-                            </div>
+                            <asp:Repeater ID="rptSchedule" runat="server">
+                                <ItemTemplate>
+                                    <div class='schedule-item <%# Eval("Status").ToString() == "In Progress" ? "active" : "" %>'>
+                                        <div class="time"><%# Eval("DepartureTime") %></div>
+                                        <div class="route">
+                                            <div class="from"><%# Eval("DepartureStation") %></div>
+                                            <i class="fas fa-arrow-right mx-2"></i>
+                                            <div class="to"><%# Eval("ArrivalStation") %></div>
+                                        </div>
+                                        <div class="status"><%# Eval("Status") %></div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Current Passengers -->
         <div class="card mb-4">
             <div class="card-header bg-info text-white">
@@ -115,34 +95,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>S1001</td>
-                                <td>Emma Wilson</td>
-                                <td>Main Campus</td>
-                                <td>Harmony Res</td>
-                                <td><span class="badge bg-success">On Board</span></td>
-                            </tr>
-                            <tr>
-                                <td>S1003</td>
-                                <td>Olivia Martin</td>
-                                <td>Main Campus</td>
-                                <td>Harmony Res</td>
-                                <td><span class="badge bg-success">On Board</span></td>
-                            </tr>
-                            <tr>
-                                <td>S1005</td>
-                                <td>Ava Garcia</td>
-                                <td>Main Campus</td>
-                                <td>Science Campus</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>S1007</td>
-                                <td>Sophia Rodriguez</td>
-                                <td>Main Campus</td>
-                                <td>Engineering Campus</td>
-                                <td><span class="badge bg-warning">Pending</span></td>
-                            </tr>
+                            <asp:Repeater ID="rptPassengers" runat="server">
+                                <ItemTemplate>
+                                    <tr>
+                                        <td><%# Eval("StudentID") %></td>
+                                        <td><%# Eval("FullName") %></td>
+                                        <td><%# Eval("BoardingPoint") %></td>
+                                        <td><%# Eval("Destination") %></td>
+                                        <td>
+                                            <span class='badge <%# Eval("Status").ToString() == "On Board" ? "bg-success" : "bg-warning" %>'>
+                                                <%# Eval("Status") %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                            </asp:Repeater>
                         </tbody>
                     </table>
                 </div>
@@ -150,6 +117,7 @@
         </div>
     </div>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="FooterScripts" runat="server">    
+
+<asp:Content ID="Content3" ContentPlaceHolderID="FooterScripts" runat="server">
     <script src="js/DriDefault.js"></script>
 </asp:Content>

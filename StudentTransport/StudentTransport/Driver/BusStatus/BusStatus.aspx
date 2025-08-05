@@ -1,14 +1,16 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Shared/Site.Master" AutoEventWireup="true" CodeBehind="BusStatus.aspx.cs" Inherits="StudentTransport.Shared.WebForm2" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <link href="css/BusStatus.css" rel="stylesheet" />
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="bus-status-page">
         <div class="header-section mb-5">
             <h1 class="display-5 fw-bold">Bus Status Management</h1>
             <p class="lead">Update your bus status in real-time</p>
         </div>
-        
+
         <div class="row">
             <!-- Bus Status Controls -->
             <div class="col-lg-6 mb-4">
@@ -24,7 +26,7 @@
                                 <h3 class="fw-bold mb-0">Active</h3>
                             </div>
                         </div>
-                        
+
                         <div class="status-controls">
                             <h6 class="text-muted mb-3">Set New Status</h6>
                             <div class="row g-3">
@@ -74,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Bus Information -->
             <div class="col-lg-6 mb-4">
                 <div class="card h-100">
@@ -114,7 +116,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="location-section mt-4">
                             <h6 class="text-muted mb-3">Current Location</h6>
                             <div class="map-placeholder">
@@ -131,7 +133,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Status History -->
         <div class="card">
             <div class="card-header bg-dark text-white">
@@ -176,6 +178,7 @@
         </div>
     </div>
 </asp:Content>
+
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterScripts" runat="server">
     <script src="js/BusStatus.js"></script>
 </asp:Content>
