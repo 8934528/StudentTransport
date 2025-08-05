@@ -1,88 +1,26 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Initialize components
-    initCheckboxes();
-    initActionButtons();
+
     initFilters();
     initPagination();
+    initModalValidation();
 
-    // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
 
-// Initialize checkbox functionality
-function initCheckboxes() {
-    const selectAllCheckbox = document.querySelector('thead .form-check-input');
-    const rowCheckboxes = document.querySelectorAll('tbody .form-check-input');
-
-    // Select all functionality
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function () {
-            const isChecked = this.checked;
-            rowCheckboxes.forEach(checkbox => {
-                checkbox.checked = isChecked;
-            });
-        });
-    }
-
-    // Individual row checkbox functionality
-    rowCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            if (!this.checked && selectAllCheckbox.checked) {
-                selectAllCheckbox.checked = false;
-            }
-        });
-    });
-}
-
-// Initialize action buttons (view, edit, delete)
-function initActionButtons() {
-    const actionButtons = document.querySelectorAll('.actions button');
-
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const action = this.querySelector('i').className;
-            const row = this.closest('tr');
-            const studentId = row.querySelector('td:nth-child(2)').textContent;
-            const studentName = row.querySelector('td:nth-child(3) div:last-child').textContent;
-
-            if (action.includes('fa-eye')) {
-                // View action
-                alert(`View student: ${studentName} (ID: ${studentId})`);
-            } else if (action.includes('fa-edit')) {
-                // Edit action
-                alert(`Edit student: ${studentName} (ID: ${studentId})`);
-            } else if (action.includes('fa-trash')) {
-                // Delete action
-                if (confirm(`Are you sure you want to delete ${studentName}?`)) {
-                    row.style.opacity = '0.5';
-                    row.style.backgroundColor = '#ffecec';
-                    setTimeout(() => {
-                        row.remove();
-                        showNotification(`${studentName} has been deleted`, 'success');
-                    }, 500);
-                }
-            }
-        });
-    });
-}
-
-// Initialize filter functionality
+// Filter functionality
 function initFilters() {
     const searchInput = document.querySelector('.input-group input');
     const searchButton = document.querySelector('.input-group button');
-    const campusFilter = document.getElementById('ddlCampus');
-    const residenceFilter = document.getElementById('ddlResidence');
-    const statusFilter = document.getElementById('ddlStatus');
+    const campusFilter = document.getElementById('<%= ddlCampus.ClientID %>');
+    const residenceFilter = document.getElementById('<%= ddlResidence.ClientID %>');
 
-    // Search button handler
     if (searchButton) {
         searchButton.addEventListener('click', filterStudents);
     }
 
-    // Search input handler (on Enter key)
     if (searchInput) {
         searchInput.addEventListener('keyup', function (e) {
             if (e.key === 'Enter') {
@@ -91,50 +29,14 @@ function initFilters() {
         });
     }
 
-    // Filter change handlers
-    [campusFilter, residenceFilter, statusFilter].forEach(filter => {
-        if (filter) {
-            filter.addEventListener('change', filterStudents);
-        }
-    });
-}
+    // Filter change 
+    if (campusFilter) {
+        campusFilter.addEventListener('change', filterStudents);
+    }
 
-// Filter students based on search and filter criteria
-function filterStudents() {
-    const searchInput = document.querySelector('.input-group input');
-    const campusFilter = document.getElementById('ddlCampus');
-    const residenceFilter = document.getElementById('ddlResidence');
-    const statusFilter = document.getElementById('ddlStatus');
-
-    const searchTerm = searchInput.value.toLowerCase();
-    const campusValue = campusFilter.value;
-    const residenceValue = residenceFilter.value;
-    const statusValue = statusFilter.value;
-
-    const rows = document.querySelectorAll('tbody tr');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        const name = row.querySelector('td:nth-child(3) div:last-child').textContent.toLowerCase();
-        const email = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-        const campus = row.querySelector('td:nth-child(5)').textContent;
-        const residence = row.querySelector('td:nth-child(6)').textContent;
-        const status = row.querySelector('td:nth-child(7) .badge').textContent;
-
-        const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
-        const matchesCampus = campusValue === 'All Campuses' || campus === campusValue;
-        const matchesResidence = residenceValue === 'All Residences' || residence === residenceValue;
-        const matchesStatus = statusValue === 'All Statuses' || status === statusValue;
-
-        if (matchesSearch && matchesCampus && matchesResidence && matchesStatus) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    showNotification(`Found ${visibleCount} students matching your criteria`, 'info');
+    if (residenceFilter) {
+        residenceFilter.addEventListener('change', filterStudents);
+    }
 }
 
 // Initialize pagination
@@ -146,27 +48,93 @@ function initPagination() {
             e.preventDefault();
             if (this.parentElement.classList.contains('disabled')) return;
 
-            // Remove active class from all items
             paginationLinks.forEach(l => {
                 l.parentElement.classList.remove('active');
             });
 
-            // Add active class to clicked item
             if (!this.textContent.includes('Previous') && !this.textContent.includes('Next')) {
                 this.parentElement.classList.add('active');
             }
 
-            // Simulate page change
             showNotification(`Loading page ${this.textContent}...`, 'info');
         });
     });
 }
 
+// Initialize modal form validation
+function initModalValidation() {
+    const addStudentForm = document.querySelector('#addStudentModal form');
+    if (addStudentForm) {
+        addStudentForm.addEventListener('submit', function (e) {
+            let isValid = true;
+            const requiredFields = this.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                showNotification('Please fill in all required fields', 'danger');
+            }
+        });
+    }
+}
+
+// Filter students based on search and filter criteria
+function filterStudents() {
+    const searchInput = document.querySelector('.input-group input');
+    const campusFilter = document.getElementById('<%= ddlCampus.ClientID %>');
+    const residenceFilter = document.getElementById('<%= ddlResidence.ClientID %>');
+
+    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+    const campusValue = campusFilter ? campusFilter.value : 'All';
+    const residenceValue = residenceFilter ? residenceFilter.value : 'All';
+
+    const rows = document.querySelectorAll('tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const name = row.querySelector('td:nth-child(2) div:last-child').textContent.toLowerCase();
+        const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+        const campus = row.querySelector('td:nth-child(4)').textContent;
+        const residence = row.querySelector('td:nth-child(5)').textContent;
+        const status = row.querySelector('.badge').textContent;
+
+        const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+        const matchesCampus = campusValue === 'All Campuses' || campus === campusValue;
+        const matchesResidence = residenceValue === 'All Residences' || residence === residenceValue;
+
+        if (matchesSearch && matchesCampus && matchesResidence) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Show/hide no results
+    const noResults = document.getElementById('<%= pnlNoStudents.ClientID %>');
+    if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    showNotification(`Found ${visibleCount} students matching your criteria`, 'info');
+}
+
 // Show notification
 function showNotification(message, type = 'success') {
-    // Create notification element
+
+    const existingAlerts = document.querySelectorAll('.custom-notification');
+    existingAlerts.forEach(alert => alert.remove());
+
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
+    notification.className = `custom-notification alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
     notification.style.zIndex = '1060';
     notification.style.opacity = '0';
     notification.style.transition = 'opacity 0.5s, transform 0.5s';
@@ -195,7 +163,6 @@ function showNotification(message, type = 'success') {
         }, 500);
     }, 3000);
 
-    // Close button functionality
     const closeButton = notification.querySelector('.btn-close');
     if (closeButton) {
         closeButton.addEventListener('click', function () {
@@ -207,8 +174,19 @@ function showNotification(message, type = 'success') {
     }
 }
 
-// Add new student functionality
-document.querySelector('.btn-primary').addEventListener('click', function () {
-    // In a real app, this would open a modal or redirect to an add student page
-    alert('Opening add new student form...');
+// Handle modal form submission
+document.getElementById('<%= btnAddStudent.ClientID %>').addEventListener('click', function () {
+    const form = document.querySelector('#addStudentModal form');
+    let isValid = true;
+
+    form.querySelectorAll('[required]').forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.classList.add('is-invalid');
+        }
+    });
+
+    if (!isValid) {
+        showNotification('Please fill in all required fields', 'danger');
+    }
 });

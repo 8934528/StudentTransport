@@ -278,5 +278,123 @@ namespace StudentTransport.Shared.Classes
                 }
             }
         }
+
+
+        // ========== THE FOLLOWING IS ALL ABOUT STUDENTS ===========
+
+        public DataTable GetAllStudents()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT 
+                            u.UserID,
+                            u.FirstName + ' ' + u.LastName AS FullName,
+                            s.StudentID,
+                            s.Residence,
+                            s.CampusLocation,
+                            u.Email,
+                            u.PhoneNumber,
+                            CASE 
+                                WHEN u.IsActive = 1 THEN 'Active'
+                                ELSE 'Inactive'
+                            END AS Status,
+                            CASE 
+                                WHEN u.IsActive = 1 THEN 'bg-success'
+                                ELSE 'bg-secondary'
+                            END AS StatusClass
+                        FROM Users u
+                        JOIN Students s ON u.UserID = s.StudentID
+                        WHERE u.Role = 'Student'";
+
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        public void AddStudent(string firstName, string lastName, string email, string password,
+                               string campus, string residence)
+        {
+            string hashedPassword = HashPassword(password);
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Insert into Users table
+                        string userQuery = @"INSERT INTO Users (Email, PasswordHash, FirstName, LastName, Role) 
+                                    VALUES (@Email, @Password, @FirstName, @LastName, 'Student');
+                                    SELECT SCOPE_IDENTITY();";
+
+                        SqlCommand userCmd = new SqlCommand(userQuery, conn, transaction);
+                        userCmd.Parameters.AddWithValue("@Email", email);
+                        userCmd.Parameters.AddWithValue("@Password", hashedPassword);
+                        userCmd.Parameters.AddWithValue("@FirstName", firstName);
+                        userCmd.Parameters.AddWithValue("@LastName", lastName);
+
+                        int userId = Convert.ToInt32(userCmd.ExecuteScalar());
+
+                        // Insert into Students table
+                        string studentQuery = @"INSERT INTO Students (StudentID, Residence, CampusLocation) 
+                                       VALUES (@StudentID, @Residence, @CampusLocation)";
+
+                        SqlCommand studentCmd = new SqlCommand(studentQuery, conn, transaction);
+                        studentCmd.Parameters.AddWithValue("@StudentID", userId);
+                        studentCmd.Parameters.AddWithValue("@Residence", residence);
+                        studentCmd.Parameters.AddWithValue("@CampusLocation", campus);
+                        studentCmd.ExecuteNonQuery();
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void DeleteStudent(int studentId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // First, delete student bookings
+                        string deleteBookingsQuery = "DELETE FROM Bookings WHERE StudentID = @StudentID";
+                        SqlCommand bookingsCmd = new SqlCommand(deleteBookingsQuery, conn, transaction);
+                        bookingsCmd.Parameters.AddWithValue("@StudentID", studentId);
+                        bookingsCmd.ExecuteNonQuery();
+
+                        // Delete from Students table
+                        string deleteStudentQuery = "DELETE FROM Students WHERE StudentID = @StudentID";
+                        SqlCommand studentCmd = new SqlCommand(deleteStudentQuery, conn, transaction);
+                        studentCmd.Parameters.AddWithValue("@StudentID", studentId);
+                        studentCmd.ExecuteNonQuery();
+
+                        // Delete from Users table
+                        string deleteUserQuery = "DELETE FROM Users WHERE UserID = @UserID";
+                        SqlCommand userCmd = new SqlCommand(deleteUserQuery, conn, transaction);
+                        userCmd.Parameters.AddWithValue("@UserID", studentId);
+                        userCmd.ExecuteNonQuery();
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

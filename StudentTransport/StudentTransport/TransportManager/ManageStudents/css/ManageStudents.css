@@ -4,12 +4,14 @@
 
 .header-section {
     padding: 20px 0;
+    border-bottom: 1px solid #eee;
 }
 
 .avatar img {
     width: 40px;
     height: 40px;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .table th, .table td {
@@ -20,10 +22,20 @@
     padding: 6px 10px;
     border-radius: 20px;
     font-weight: 500;
+    font-size: 0.85rem;
 }
 
-.form-check-input {
-    margin-top: 0;
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
 }
 
 /* Action buttons */
@@ -41,6 +53,8 @@
     border-radius: 5px;
     margin: 0 3px;
     border: 1px solid #dee2e6;
+    min-width: 38px;
+    text-align: center;
 }
 
 .page-item.active .page-link {
@@ -51,4 +65,40 @@
 /* Filter section */
 .card-body {
     padding: 20px;
+}
+
+/* Modal styles */
+.modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #6082B6;
+    color: white;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-section .d-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-section .btn {
+        margin-top: 15px;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 5px !important;
+    }
+
+        .actions .btn {
+            width: 100%;
+        }
 }
